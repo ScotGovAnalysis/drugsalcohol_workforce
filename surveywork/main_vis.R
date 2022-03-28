@@ -208,7 +208,7 @@ Staffing_byorg %>%
 #Table 4: employment/vacancy totals by role type
 ##requires staffing_wrangle function, which can be found in Wafflechart.R
 
-rbind((staffing_wrangle(basedata, "Nursing") %>% 
+rbind((staffing_wrangle(basedata, "Nursing") %>%                                  ###############this is formatting
   pivot_wider(names_from = Employment, values_from = Total) %>% 
   mutate(total = Vacancy+Employed,
          vacancyrate = round(Vacancy/total*100,1))),
@@ -226,7 +226,7 @@ rbind((staffing_wrangle(basedata, "Nursing") %>%
 (staffing_wrangle(basedata, "Non-clinical") %>% 
   pivot_wider(names_from = Employment, values_from = Total) %>% 
   mutate(total = Vacancy+Employed,
-         vacancyrate = round(Vacancy/total*100,1)))) %>% 
+         vacancyrate = round(Vacancy/total*100,1)))) %>%                              ############this is where the substantive wrangling occurs
   mutate(`Reported employment` = scales::comma(Employed, accuracy = .1),
          `Reported vacancies` = scales::comma(Vacancy, accuracy = .1),
          `Reported total capacity` = scales::comma(total, accuracy = .1),
