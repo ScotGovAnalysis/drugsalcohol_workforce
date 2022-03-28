@@ -1,0 +1,121 @@
+## Annex 5: Estimating total workforce capacity in Scotland’s alcohol and drug services
+
+This section outlines the methodological background for modelling estimates of the employment totals in Scotland's alcohol and drug services. 
+
+Between 22 November and 17 December 2021, Scottish Government (in partnership with Public Health Scotland) surveyed all 206 alcohol and drug services currently delivering on behalf of Alcohol and Drugs Partnerships (ADPs). 88 valid responses were received, for a response rate of 43%. Total employment reported (measured in whole-time equivalents) was  **1,572.8 WTEs**. The response rate and employment total were then used to estimate staff size in the remaining 118 services, thereby providing a basis for approximating the number of WTEs working in Scotland’s frontline services. These figures are shown in Table 5.1, with the underlying methods outlined in forthcoming sections. We therefore estimate that the total workforce in drug and alcohol services in Scotland is between **3,288.0 and 3,768.4 WTEs**.
+
+```{r Table1_annex}
+Methodology <- c("Mean by health board", "Mean of means",
+          "Mean by health board (Winsorization)", "Mean of means (Winsorization)",
+          "Bootstrap")
+
+`Employment(WTEs)` <- c(3768, 3499, 3505, 3288, 3658)
+
+data.frame(Methodology, `Employment(WTEs)`) %>% 
+  flextable() %>% 
+  width(j=1, 3) %>%
+  width(j=2, 2) %>% 
+   add_header_row(colwidths = 2,
+                 values = "Table 5.1: Estimated employment across Scotland's alcohol and drug services by method") %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  bold(part='header') %>% 
+  hline(i=c(2,4), border = officer::fp_border()) %>% 
+  vline(j=1, border = officer::fp_border()) %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  colformat_num(j=2, big.mark=",")
+
+
+```
+
+### Limitations
+
+There are several important limitations with these estimates. The first is they are all predicated on the assumption that the responses received are representative of the entire sector. This is difficult to verify due to the dearth of empirical evidence about alcohol and drug services in Scotland – hence why this project was undertaken in the first place. However this is somewhat mitigated by the fact that the survey was sent to every service in Scotland. The 43% response rate therefore corresponds not to a sample, but to the entire population. In other words, the data here includes almost half of all services in Scotland.
+
+The second limitation is that services were asked to produce employment totals as of 1 November 2021. In the absence of time-series data, this single census date prevents us from observing trends over time, and should instead be considered a 'snapshot' of employment in drug and alcohol services at that date.
+
+The third limitation is that the underlying dataset, comprised of 88 responses, is relatively small. This makes certain descriptive statistics (e.g. mean, standard deviation) sensitive to outliers in the data. However we tried to account for these when producing our estimates, as outlined below.
+
+Finally, no services from Borders and Shetland Health Boards responded to this survey. Although these are relatively small areas, with three services between them, the lack of responses rendered attempts to estimate workforce size in these NHS boards basically impossible. A decision was therefore taken to substitute their staff totals with figures from other areas. Due to the demographic similarities as well as geographical proximity, measures of central tendency from Orkney were used for Shetland, and those from Dumfries & Galloway were used for Borders.
+
+In sum, the 88 responses provided a rich dataset of heretofore-unknown information about frontline drug and alcohol services. However, these limitations underscore the substantial amount of uncertainty when extrapolating this data across the sector. To paraphrase statistician George Box: all models are wrong, but some are useful^[[Box, 1979](https://www.sciencedirect.com/science/article/pii/B9780124381506500182?via%3Dihub)]. We hope the following estimates can be used as an indicator of total employment, and therefore to inform workforce planning in frontline services going forward.
+
+
+### Estimates
+
+The following sections outline how the different workforce totals were estimated. As mentioned, 88 completed surveys were received, and Annex 1 shows how these were distributed across health board. It also shows the number of missing responses per health board, that is, the number of services for which workforce estimates would be produced.
+
+### Pooled means
+
+The first method entailed pooling mean reported employment. This produced two different sets of figures:
+
+  1. **Mean by health board**: The first method entailed calculating the mean number of employees per organisation *per health board*. This provided 12 different means, one for each health board. The figures for the two missing health boards (Borders and Shetland) were substituted with means from adjacent areas, as explained above. These means were then applied to the number of services in that health board that did not respond, thereby producing an estimate of the 'unreported' workforce. This figure was then added to the employment totals reported by survey respondents to produce an estimate of the workforce by health board. When the missing health boards were summed, the total workforce across all health boards amounted to **3,768 WTEs**
+  2. **Mean of means**: The second method entailed calculated the average of the 12 different means reported in step 1, which produced a single sector-wide mean. This 'mean of means' was then applied to the number of services that did not respond in each health board. As above this 'unreported' workforce was then added to the totals reported by survey respondents. When this mean of means was applied to the missing health boards, this produced an aggregated total of **3,499 WTEs**
+
+### Pooled means – Winsorizing
+
+The small number of data points in this analysis means that outliers can unduly influence the distribution. There was one such figure here which was nearly twice as large as the second largest reported employment total. One method of accounting for possibly spurious outliers is via Winsorizing. Briefly, Winsorizing makes inferential statistical procedures that rely on mean and variance more robust, and can be especially useful when data is non-normally distributed^[see [Pek, Wong and Wong, 2018](https://www.frontiersin.org/articles/10.3389/fpsyg.2018.02104/full)] as reported employment in this survey was (Figure 5.2).
+
+```{r Figure2_annex, fig.dim=c(7,3)}
+Staffing_byorg <- basedata %>% 
+  select(3, 5, 20, 23:33,36:51,54:65, 68:87, 95:99, 106:109) %>% 
+  select(-`2: Email address:`, `2: Email address:`,
+         -`25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`,
+         `25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`,
+         -`6: Please select your NHS Health Board and HSCP: Health Board`,
+         `6: Please select your NHS Health Board and HSCP: Health Board`) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  mutate(`TOTAL EMPLOYED` = rowSums(.[c(3,4,5,6,7,13,14,15,16,17,18,19,20,29,30,31,32,33,34,41,42,43,44,45,46,47,48,49,50,61,62,63,64,65)]),
+         `TOTAL VACANCIES` = rowSums(.[c(8,9,10,11,12,21,22,23,24,25,26,27,28,35,36,37,38,39,40,51,52,53,54,55,56,57,58,59,60)]),
+         `TOTAL CAPACITY` = `TOTAL EMPLOYED` + `TOTAL VACANCIES`,
+         vacancy_ratio = round(`TOTAL VACANCIES`/`TOTAL CAPACITY`*100, 1),
+         volunteers = case_when(`25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`>0~1,
+                                T~0)) %>% 
+  select(1,2,66:76, everything()) 
+
+Staffing_byorg %>% 
+  select(`TOTAL EMPLOYED`) %>% 
+  ggplot(aes(x=`TOTAL EMPLOYED`))+
+  geom_histogram(color="black",bins=25, fill = "#0065bd") +
+  theme+
+  labs(x="Reported number of employees",
+       y="",
+       title = "Figure 5.2: Distribution of the number of paid employees by \norganisation") +
+  scale_x_continuous(breaks = seq(0,600, by = 10)) 
+  
+
+```
+
+This analysis opted for 90% Winsorization of the total employment by organisation. This transformed all observations greater than the 95th percentile equal to the value at the 95th percentile, and the same for those at the 5th percentile. In effect this weighted the middle 90th percentile more heavily.
+
+Following this data transformation, the two methods outlined in the section above were repeated. This yielded the following figures:
+
+  1. **Mean by health board**: 3,505 WTEs
+  2. **Mean of means**: 3,288 WTEs
+
+
+### Bootstrapping
+
+The final method of producing a sector-wide workforce estimate was via bootstrapping. Bootstrapping is a resampling method where large numbers of samples of the same size are repeatedly drawn, with replacement, from a single original sample. It is especially useful for small datasets and where sample distributions are non-normal^[see [Zhao, 2013](https://www.semanticscholar.org/paper/Bootstrapping-Techniques-in-Statistical-Analysis-in-Zhao/626fb3711be2e8154933752de4824d7461e785fb)].
+
+Remember that this dataset comprised 88 responses, that is, 88 different reported employment totals. So for the bootstrapping protocol, employment totals were randomly selected a total of 88 times (corresponding to the original *n*), producing a new set of sample employment values. Although this resampling was random it was also 'with replacement', which means that a value could be chosen more than once. This process of random selection with replacement was then repeated a total of 500,000 times, thereby producing a matrix of employment totals from which population parameters could be derived. 
+
+Figure 5.3 shows the distribution of the means for each of the 500,000 bootstrapping samples. Note the Gaussian shape of the distribution^[The distribution of the mean of a random sample from a population with finite variance will be approximately normally distributed when the sample size is sufficiently large, regardless of the shape of the original distribution. For more information, see [LaMorte, 2016](https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_probability/BS704_Probability12.html)]. The vertical line denotes the bootstrapped mean of 17.7 employed WTEs per service (CI 95% 13.5-21.8). When applied to the missing services across the sector, then added to the known employment total, this produces a sector-wide sum of **3,658.2 WTEs**. However, the relatively wide confidence interval noted above shows that there is still sizable uncertainty with this estimate.
+
+
+```{r Figure 3_annex, fig.dim=c(7,4)}
+B <- 500000
+n <- nrow(Staffing_byorg)
+
+boot.samples <- matrix(sample(Staffing_byorg$`TOTAL EMPLOYED`, size=B*n, replace=T), B,n)
+
+boot.stats <- apply(boot.samples,1,mean)
+
+ggplot(data.frame(mean_emp=boot.stats),aes(x=mean_emp))+
+  geom_histogram(binwidth=0.25,aes(y=..density..), fill="#0065bd") +
+  geom_density(color="#912688") +
+  geom_vline(aes(xintercept=mean(mean_emp)), linetype="dotdash") +
+  theme+
+  labs(x="Bootstrapped mean of reported employees",
+       title = "Figure 5.3: Distribution of bootstrapped means of \nreported employees (WTEs)",
+       caption= "n=500,000")
+```
