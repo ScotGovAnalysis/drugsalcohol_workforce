@@ -5,9 +5,9 @@ library(tidyverse)
 
 #This was an aborted attempt to employ webscraping in gathering more granular data from university/college webpages. Amazingly the method actually worked, but with substantial shortcomings – namely, it did not function when course offerings were in a javascript (i.e. reactive) table. 
 
-The two examples below are demonstrative. Edinburgh and Glasgow Unis have their course offerings in standard HTML format, but comparing their DevTools shows the extent to which the formatting differs. In other words, this approach was far too fiddly to be applied at scale. 
+#The two examples below are demonstrative. Edinburgh and Glasgow Unis have their course offerings in standard HTML format, but comparing their DevTools shows the extent to which the formatting differs. In other words, this approach was far too fiddly to be applied at scale. 
 
-But... it *did* work, and the applications here can be extended to other workstreams too.
+#But... it *did* work, and the applications here can be extended to other workstreams too.
 
 ###################################################################################
 
