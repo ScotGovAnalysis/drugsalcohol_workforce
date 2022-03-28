@@ -119,15 +119,15 @@ gridExtra::grid.arrange((staffing_wrangle(basedata, "Medical") %>%
   
 ###########################################################################################
   
-Annex 4: regression analysis
+#Annex 4: regression analysis
 
-see regression.R
+#see regression.R
 
 ###########################################################################################
   
 Annex 5: Workforce estimates
 
-##see estimates.R for more information about how these figures were derived
+##see estimates subfolder for more information about how these figures were derived
 
 Methodology <- c("Mean by health board", "Mean of means",
           "Mean by health board (Winsorization)", "Mean of means (Winsorization)",
