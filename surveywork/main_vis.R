@@ -116,9 +116,9 @@ basedata %>%
   select(-`6: Please select your NHS Health Board and HSCP: Health Board`, -summed_emp, -summed_vac, -total,-prop) %>% 
   add_row(`NHS Board` = "Total",
     `Reported employment`="1,572.8",
-          `Reported vacancies` = "152.2",
-          `Reported total capacity` = "1,725.0",
-          `Vacancy rate` = "8.8%") %>% 
+    `Reported vacancies` = "152.2",
+    `Reported total capacity` = "1,725.0",
+    `Vacancy rate` = "8.8%") %>% 
   flextable() %>% 
   width(j=1, 2.5) %>% 
   width(j=c(2,3,4,5), 1.2) %>% 
@@ -146,7 +146,7 @@ Staffing_byorg %>%
   pivot_longer(`TOTAL EMPLOYED`:`TOTAL VACANCIES`, names_to="Category", values_to = "Total") %>% 
   group_by(`8: Please select the option which best describes your service category:`, Category) %>% 
   summarise(sums = sum(Total)) %>% 
-   mutate(`Organisation Type` = str_wrap(`8: Please select the option which best describes your service category:`,12),
+  mutate(`Organisation Type` = str_wrap(`8: Please select the option which best describes your service category:`,12),
           Category = case_when(Category == "TOTAL EMPLOYED"~"Reported Employment",
                                T~"Reported Vacancies")) %>% 
   ggplot(aes(x=`Organisation Type`, y=sums, fill=Category)) +
@@ -202,3 +202,125 @@ Staffing_byorg %>%
 #########################################################
 
 #Figure 4: See Wafflechart.R
+
+#########################################################
+
+#Table 4: employment/vacancy totals by role type
+##requires staffing_wrangle function, which can be found in Wafflechart.R
+
+rbind((staffing_wrangle(basedata, "Nursing") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Medical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Psychology") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Non-clinical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1)))) %>% 
+  mutate(`Reported employment` = scales::comma(Employed, accuracy = .1),
+         `Reported vacancies` = scales::comma(Vacancy, accuracy = .1),
+         `Reported total capacity` = scales::comma(total, accuracy = .1),
+         `Vacancy rate` = paste0(vacancyrate,"%")) %>% 
+  arrange(desc(vacancyrate)) %>% 
+  filter(str_detect(`Job Type`, "TOTAL")) %>% 
+  select(-Employed, -Vacancy, -total, -vacancyrate, -`Job Type`) %>% 
+  ungroup() %>% 
+   add_row(Category = "Other", 
+          `Reported employment` = "78.5",
+          `Reported vacancies` = "-",
+          `Reported total capacity` = "-",
+          `Vacancy rate` = "-") %>% 
+  add_row(Category = "Total", 
+          `Reported employment` = "1,572.8",
+          `Reported vacancies` = "152.2",
+          `Reported total capacity` = "1,725.0",
+          `Vacancy rate` = "8.8%") %>% 
+  flextable() %>% 
+  width(j=1, 1.8) %>% 
+  width(j=c(2,3,4,5), 1.2) %>% 
+  add_header_row(colwidths = 5,
+                 values = "Table 4: Reported employment and vacancy totals by role type across all respondents (as of 1 November 2021)") %>% 
+  bold(part = 'header') %>% 
+  bold(j=5) %>% 
+  bold(i=6) %>% 
+  vline(j=4, border = officer::fp_border()) %>% 
+  vline(j=1, border = officer::fp_border()) %>% 
+  hline(i=5, border = officer::fp_border()) %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  align(j=1, part = 'all') %>% 
+  add_footer_row(top = F, 
+                 colwidths = 5,
+                 values = "Note: Vacancy information was not sought for roles in the 'Other' category")
+
+#########################################################
+
+#Figure 5: Histogram of employee service users
+
+Staffing_byorg %>% 
+  filter(`8: Please select the option which best describes your service category:` != "ADP") %>% 
+  mutate(`8: Please select the option which best describes your service category:` = case_when(`8: Please select the option which best describes your service category:` == "Health and Social Care Partnership"~"HSCP", 
+                                                                                               T~ `8: Please select the option which best describes your service category:`)) %>% 
+  ggplot(aes(x=`8: Please select the option which best describes your service category:`,
+             y=`27: Of those workers with a caseload, what is the average number of service users being case-managed by each frontline WTE worker:`)) +
+  geom_boxplot()+
+  theme+
+  labs(y="Average service users per WTE employee",
+       x="Organisation type",
+       title = "Figure 5: Average number of service users per frontline WTE \nemployee by service type") +
+  scale_y_continuous(breaks = seq(0,125, by= 10))
+
+#########################################################
+
+#Figure 6: Histogram of employee service users
+##Note: see regression.R for more use of this data
+
+#Step 1: create dataset of people who did not respond to this survey question
+join_not <- basedata %>% 
+  mutate(sick_days = `24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`) %>%
+  filter(is.na(sick_days)) %>% 
+  select(`4: Service/Provider Name:`,
+         `8: Please select the option which best describes your service category:`,
+         `2: Email address:`) %>% 
+  mutate(flag=1)
+
+#Step 2: remove these people from main dataset
+linreg <- anti_join(Staffing_byorg, join_not, by=c("4: Service/Provider Name:", 
+                                              "8: Please select the option which best describes your service category:",
+                                              "2: Email address:")) %>%
+  mutate(caseload = `27: Of those workers with a caseload, what is the average number of service users being case-managed by each frontline WTE worker:`,
+         sickdays = (log(`24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`+1)),
+         sick_days= `24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`)
+
+#Step3: Create sick rate by employment total, and visualise
+linreg %>%
+  mutate(sickrate = sick_days / `TOTAL EMPLOYED`,
+         medians = median(sickrate)) %>%
+  select(`4: Service/Provider Name:`,
+         `8: Please select the option which best describes your service category:`,
+         sickrate,
+         medians) %>%
+  filter(sickrate<50) %>% 
+  # group_by(`8: Please select the option which best describes your service category:`) %>%
+  # summarise(average_sickrate = mean(sickrate))) %>%
+  ggplot(aes(x = sickrate)) +
+  geom_histogram(color = "black", fill = "#0065bd", bins = 20) +
+  geom_vline(aes(xintercept = median(sickrate)), 
+             color = "#912688",
+             linetype = "dotdash",    
+             size = 1) +
+  theme +
+  labs(x="Sick days per WTE employee",
+       y="Organisation count",
+       title = "Figure 6: Number of days lost to sickness per employed WTE \nstaff between 1 May and 1 November 2021",
+       caption = "Note: Omits 15 respondents who did not input a value")
