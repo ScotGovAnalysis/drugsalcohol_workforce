@@ -1,0 +1,1014 @@
+---
+title: "Survey results of frontline workforce in Scotland’s alcohol and drug services"
+
+output: 
+  word_document:
+    reference_docx: output_test.docx 
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(flextable)
+# set chunks defaults
+knitr::opts_chunk$set(
+  echo       = FALSE,
+  message    = FALSE,
+  warning    = FALSE, 
+  dpi = 300
+)
+
+#creating theme
+theme <- 
+  theme_bw()+
+  theme(axis.text.x = element_text(size=10),
+        axis.text.y = element_text(size=10),
+        axis.title = element_text(size = 12),
+        plot.title = element_text(size=16),
+        strip.text.x = element_text(size =11),
+        legend.position = 'bottom',
+        legend.text=element_text(size=10),
+        # panel.grid.major.x = element_blank(),
+        panel.grid.minor.x=element_blank(),
+        panel.grid.minor.y = element_blank())
+```
+
+
+
+## Key findings:
+
+A survey of the drug and alcohol workforce was sent to 206 frontline services between 22 November and 17 December 2021. 88 completed responses were received, for a response rate of 43%. The key findings from the data are as follows:
+
+  * •	The number of whole-time equivalents (WTEs) employed in alcohol and drug services as at 1 November 2021 was estimated to be in the range of 3,288 to 3,768;
+  * Across all services, there were 1,572.8 WTE employees reported;
+  * 152.2 WTE vacancies were also reported, for a sector-wide vacancy rate of 8.8%;
+  * The highest vacancy rates by NHS board were Forth Valley (17.9%), Tayside (13.7%) and Highland (13.2%); 
+  * The highest vacancy rates were in NHS organisations (10.1%) and health and social care partnerships (9.1%);
+  * Non-clinical roles constituted by far the largest share of the sector's employment with 974.7 WTEs. This was followed by nursing (419.5 WTEs), 'other' (78.5 WTEs), medical (67.9 WTEs) and psychology (32.2 WTEs);
+  * Psychology roles had the highest vacancy rates (18.3%), followed by medical roles (16.4%);
+  * Under the main employment headings, the greatest vacancy rates were for psychological therapists (38.9%), locum doctors (22.9%) and consultant psychologists (22.7%);
+  * Reported vacancy rates for nearly half (44.8%) of the individual roles queried in this survey exceeded 10%;
+  * Amongst the lowest  vacancy rates were service managers (2.1%), suggesting few opportunities for progression into management positions;
+  * The highest average caseloads per WTE employee were found in HCSPs and NHS organisations;
+  * Employee wellbeing remains an issue, with organisations reporting an average of 34 sick days taken between 1 May and 1 November. When controlling for service size, nearly one in three respondents reported an average of at least one sick day per employee per month over that period;
+  * Multiple linear regression analysis of this data showed a statistically significant relationship between caseloads and sick days. When controlling for certain independent variables, a one unit increase in the average caseload per WTE employee was associated with an increase in the number of sick days taken by 5%;
+  * 13.6% of responses highlighted the necessity of service review and redesign of some drugs and alcohol services.
+  
+Overall, the recruitment and retention issues facing the sector are diverse and multifaceted, and differ by organisation type and geography. Respondents highlighted issues with funding and compensation, shortcomings in career development and progression, and a general lack of appreciation/understanding of what working in frontline services entails. This data underscores the importance of sustained investment in this workforce.
+
+## 1. Introduction
+
+Scottish Government announced a National Mission to reduce drug-related deaths and harms in January 2021^[[Scottish Government, 2021a](https://www.gov.scot/policies/alcohol-and-drugs/national-mission/)] to address Scotland’s record numbers of drug-related deaths. Scotland’s alcohol-related death rates are also consistently higher than those of England and Wales, as well as the rest of Europe^[[National Records of Scotland, 2021](https://www.nrscotland.gov.uk/statistics-and-data/statistics/statistics-by-theme/vital-events/deaths/alcohol-deaths)]. In addressing these challenges the Scottish Government is committed to supporting a resilient and skilled workforce in the drug and alcohol treatment sector.
+
+To support these efforts Health and Social Care Analysis (HSCA) have undertaken a programme of work to better understand the drug and alcohol workforce. This includes both collecting and analysing existing datasets, and generating new data. This paper specifically reports the key findings of a survey of drug/alcohol services conducted in autumn 2021. The results of this survey provide a rich evidence base across a variety of topics including service type, staff numbers and wellbeing, vacancy rates and caseloads. These quantitative and qualitative data provide crucial insights about the current state of Scotland's drug and alcohol workforce, and will inform how we support and empower individuals and organisations delivering frontline services.
+
+## 2. Methods
+
+The first step of designing this survey was developing a sampling plan. Using the Drug & Alcohol Information System^[[Public Health Scotland, 2020](https://www.isdscotland.org/Health-Topics/Drugs-and-Alcohol-Misuse/Drug-Alcohol-Information-System/)] (DAISy) was determined to be the most effective way of reaching potential respondents. DAISy is maintained by Public Health Scotland (PHS), and is a national database developed to collect information on drug and alcohol referrals, waiting times and outcomes from specialist drug and alcohol interventions. It is used by all services which are commissioned by Alcohol and Drug Partnerships (ADPs), and the organisations comprise a range of types (NHS, third sector, integrated, etc) from all NHS boards in Scotland. It therefore provides the most comprehensive data on publicly-funded alcohol and drug services in Scotland. DAISy removed the need to devise a representative sampling strategy because the database includes every (or nearly every) service currently delivering on behalf of ADPs in Scotland. In other words, the survey would be sent to the entire 'population' rather than a sample. It is noted that respondents would self-select, likely introducing some bias to the results. Nevertheless, DAISy is by far the best source of information for collecting data about frontline services, and therefore deriving sector-wide estimates about the drug and alcohol workforce.
+
+The survey instrument drew on work from Dame Carol Black's independent review of drugs for the UK Government, published in July 2021^[[Black, 2021](https://www.gov.uk/government/publications/review-of-drugs-phase-two-report)]. One element of that report was a survey of treatment providers conducted to explore reductions in substance misuse prevention and treatment in England. In the interests of reducing duplication and expediting survey design, HSCA worked with colleagues in Public Health England and the UK Department of Health and Social Care to acquire these survey materials. A working group comprising Scottish Government analytical and policy colleagues was then convened to tailor the survey to the Scottish context. This principally involved modifying job titles to reflect roles found in Scottish services under five main headings: nursing, medical, psychology, non-clinical, and 'other' (that is, roles not mentioned elsewhere). Other questions relevant to the research around non-medical prescribers and voluntary posts were also added. The survey thus included a combination of closed and open-ended questions.
+
+The risks associated with COVID necessitated distributing this survey digitally rather than face-to-face. However this approach was advantageous because written surveys are best suited to eliciting confidential information across a wide geographical area^[[Glasow, 2005](https://www.mitre.org/sites/default/files/pdf/05_0638.pdf); [Hewson, Vogel & Laurent, 2016](https://methods.sagepub.com/book/internet-research-methods-2e)]. As a final layer of quality assurance, the survey was field-tested with select colleagues working in ADPs to ensure the survey questions and format overall were fit for purpose.
+
+Finally, the survey launched on 22 November 2021 and was distributed to the 206 services on DAISy. The covering email included text ensuring respondent confidentiality and compliance with EU General Data Protection Regulations. The survey remained open until 20 December 2021, during which time four reminder emails were sent. A total of 89 responses were received in this period, only one of which was discarded due to incompleteness. Consequently the final dataset contained 88 responses, 43% of all Scotland's alcohol and drug services. These were then analysed using both descriptive and inferential statistical techniques, as well as qualitative methods. Table 1 provides high-level data on responses received.
+
+```{r Table1, include=T, fig.dim = c(7,3)}
+basedata <- readxl::read_xlsx("C:/Users/u449921/Documents/Workforce/Survey work/Surveyresults_final.xlsx")
+
+Measure <- c("Number of survey recipients", 
+             "Number of valid survey responses", 
+             "Response rate",
+             "Number of health boards reporting",
+             "Total number of WTE employees reported",
+             "Median number of WTE employees per service (IQR)")
+
+Totals <- c("206",
+            "88",
+            "43%",
+            "12 of 14",
+            "1,572.8",
+            "11.0 (5.0-22.5)")
+
+data.frame(Measure, Totals) %>% 
+  flextable() %>% 
+  width(j=1, 4.5) %>%
+  width(j=2,1.5) %>% 
+  add_header_row(colwidths = 2,
+                 values = "Table 1: Descriptive statistics of respondents to survey of drug and alcohol services") %>% 
+  bold(part = 'header') %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>%
+  align(j=2, align = 'right', part = 'all') %>% 
+  align(j=1, align = 'left', part = 'all') %>% 
+  vline(j=1, border = officer::fp_border()) %>% 
+  hline(i=4, border = officer::fp_border())
+
+
+# basedata %>% 
+#   select(Date) %>% 
+#   separate(Date, into = c("Date", "Time"), sep = 10) %>% 
+#   add_row(Date = "2021-11-22", Time = "") %>% 
+#   mutate(date = as.Date(Date, '%Y-%m-%d')) %>% 
+#   group_by(date) %>% 
+#   summarise(total = n()) %>%
+#   ungroup() %>% 
+#   ggplot(aes(x=date, y=cumsum(total))) +
+#   geom_line() +
+#   theme +
+#   scale_y_continuous(breaks = seq(0,90, by = 10)) +
+#   labs(x="Date",
+#        y="Responses",
+#        title = "Figure 1: Cumulative responses to workforce survey, \n22 November to 20 December 2021",
+#        caption = "Note: blue lines denote reminder emails")+
+#   geom_vline(xintercept = as.numeric(as.Date("2021-11-30")), linetype = 4, colour = "#0065bd") +
+#   geom_vline(xintercept = as.numeric(as.Date("2021-12-06")), linetype = 4, colour = "#0065bd") +
+#   geom_vline(xintercept = as.numeric(as.Date("2021-12-09")), linetype = 4, colour = "#0065bd") +
+#   geom_vline(xintercept = as.numeric(as.Date("2021-12-15")), linetype = 4, colour = "#0065bd")
+```
+
+## 3. Findings
+
+## 3.1 Overview
+
+Figure 1 maps the survey response rate by NHS board. Rural areas responded at comparatively higher rates than urban areas; Orkney, Ayrshire & Arran and Grampian Health Boards had the highest response rates, while Lothian, Fife and Lanarkshire had the lowest. No responses were received from Shetland or Borders NHS boards. Although Greater Glasgow & Clyde and Lothian NHS boards were amongst the lowest response rates – 36.1% and 31.7% of services respectively – they (along with Highland) featured the greatest *absolute* number of responses (see Annex 1 for full figures).
+
+```{r Fig1, include = T}
+
+
+# surveyrecipients <- readxl::read_xlsx("C:/Users/u449921/Documents/Workforce/Survey work/Survey_recipients.xlsx") %>% 
+#   mutate(`Health Board` = str_replace(`Health Board`, "NHS ", ""),
+#          cat = "Number of services on DAISy") %>% 
+#   group_by(`Health Board`, cat) %>% 
+#   summarise(total = n())
+# 
+# Fig1 <- basedata %>% 
+#   group_by(`6: Please select your NHS Health Board and HSCP: Health Board`) %>% 
+#   summarise(total = n()) %>% 
+#   filter(!is.na(`6: Please select your NHS Health Board and HSCP: Health Board`),
+#          `6: Please select your NHS Health Board and HSCP: Health Board` != "Borders") %>% 
+#   mutate(`Health Board` = `6: Please select your NHS Health Board and HSCP: Health Board`,
+#          cat = "Number of survey respondents") %>% 
+#   select(`Health Board`, cat, total,
+#          -`6: Please select your NHS Health Board and HSCP: Health Board`) 
+# 
+# bind_rows(surveyrecipients, Fig1) %>% 
+#   pivot_wider(names_from = cat, values_from = total) %>% 
+#   replace(is.na(.), 0) %>% 
+#   mutate(prop = `Number of survey respondents`/`Number of services on DAISy`) %>% 
+#   pivot_longer(cols = `Number of services on DAISy`:`Number of survey respondents`, names_to = "cat", values_to = "total") %>% 
+#   ggplot(aes(x=reorder(`Health Board`, prop), y=total, fill = cat)) +
+#   geom_col(position = 'dodge') +
+#   coord_flip() +
+#   theme+
+#   theme(legend.title = element_blank())+
+#   labs(x="NHS Health Board",
+#        caption = "Note: Arranged in order of proportional response rate by health board",
+#        title = "Figure 2: Response rates by Health Board",
+#        y="Total") +
+#   geom_text(aes(label = total), position = position_dodge(1), hjust=-.1) +
+#   scale_fill_manual(values = c("#0065bd", "#912688"))
+
+knitr::include_graphics("C:/Users/u449921/Documents/Workforce/Survey work/mapforpub.png")
+
+
+```
+
+
+In addition to this geographic heterogeneity, services of every type responded to this survey (Figure 2). Third sector organisations represented the greatest share, numbering nearly 4 in 10. NHS organisations accounted for over a quarter of the respondents. Furthermore, several ADP coordinators themselves also responded – they are ideally positioned to provide key insights from a strategic perspective given their roles in commissioning services as well as coordinating efforts between local partners (health boards, local authorities, police and voluntary agencies).
+
+```{r Fig2, include=T, fig.dim=c(7,3.5)}
+basedata %>% 
+  filter(`6: Please select your NHS Health Board and HSCP: Health Board` != "Borders") %>% 
+  group_by(`8: Please select the option which best describes your service category:`) %>% 
+  summarise(total = n()) %>% 
+  mutate(overall = sum(total),
+         prop = round(total/overall*100,1),
+         organisation="") %>% 
+  ggplot(aes(x=organisation, y=prop, fill = reorder(`8: Please select the option which best describes your service category:`, prop))) +
+  geom_col(position = 'stack') +
+  coord_flip()+
+  theme +
+   theme(legend.position = 'bottom',
+        legend.title = element_blank())+
+  labs(x="",
+       y="%",
+       title = "Figure 2: Survey respondents by organisation type",
+       subtitle = "n=88") +
+  scale_fill_brewer(palette = 'Blues') +
+  guides(fill=guide_legend(reverse=T,ncol=2))+
+  geom_text(aes(label = paste0(prop, '%')), position = position_stack(.5))
+
+```
+
+Overall, Figures 1 and 2 demonstrate that the survey responses not only cover a vast geographical area, but also comprise services spanning both rural and urban settings. Moreover, the respondent profile includes organisations of every type and working in every area of frontline substance use treatment. The results therefore constitute a representative sample of Scotland's drug and alcohol services ecosystem.
+
+## 3.2 Total employment across the workforce
+
+Empirical data around staffing in drug and alcohol services is neither specifically-recorded nor well-known. This survey therefore asked respondents to provide employment totals for staff in both clinical and non-clinical roles as of 1 November 2021. To maintain consistency with NHS Education Scotland's (NES) approach, these were to be submitted in whole-time equivalents (WTEs). 88 of 206 organisations responded to the survey – constituting a response rate of 43% – and total employment across all responses was **1,572.8 WTEs**. 
+
+The response rate and employment total were then used to estimate staff size in the remaining 118 services. A series of analytical methods were employed to estimate the size of this 'unknown' population, which are outlined in Annex 5. Combining these estimates with the employment total listed above provided a basis for approximating the overall number of WTEs working in this sector. Based on these methods, the total estimated workforce in Scotland’s drug and alcohol services as of 1 November 2021 was in the region of  3,500 WTEs, and in the range of 3,288 and 3,768 WTEs.
+
+## 3.3 Vacancy rates
+The capacity issues that health and social care services in Scotland face have been extensively documented^[see e.g. [Scottish Government, 2021](https://www.gov.scot/news/increasing-nhs-capacity-2/); [Audit Scotland, 2021](https://www.audit-scotland.gov.uk/uploads/docs/report/2021/nr_210117_nhs_overview.pdf); [Sleight, 2021](https://www.bbc.co.uk/news/uk-scotland-58641817)], and have worsened during the COVID-19 pandemic. Workforce composition may also vary depending on service type and location. 
+
+A substantial portion of the survey was thus devoted to measuring vacancy rates. NES's definition of 'vacancy rate' was adopted for this research, which entails dividing the number of vacancies by the sum of staff in post plus vacancies per service^[[NES, 2022](https://turasdata.nes.nhs.scot/about-our-data-and-reports/data-sources-and-quality-assurance/vacancy-surveys/)]. So in addition to the employment data specified above, survey respondents were also instructed to provide vacancy figures for each role type as of 1 November 2021. 
+
+Using this methodology, the 88 survey respondents reported an aggregated total of 1,572.8 WTEs employed as of 1 November 2021. Total vacancies numbered 152.2 WTEs. Using these figures gives a sector-wide vacancy rate of **8.8%**. The following sections outline how this data breaks down by geography, organisation type and job role.
+
+### 3.3.1 Vacancy rates by geography
+Reported employment and vacancy WTE totals grouped by NHS board are shown in Table 2. 
+
+```{r Table2, include=T}
+##Wrangling
+Staffing_byorg <- basedata %>% 
+  select(3, 5,23:33,36:51,54:65, 68:87, 95:99, 106:109) %>% 
+  select(-`2: Email address:`, `2: Email address:`,
+         -`25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`,
+         `25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  mutate(`TOTAL EMPLOYED` = rowSums(.[c(3,4,5,6,7,13,14,15,16,17,18,19,20,29,30,31,32,33,34,41,42,43,44,45,46,47,48,49,50,61,62,63,64,65)]),
+         `TOTAL VACANCIES` = rowSums(.[c(8,9,10,11,12,21,22,23,24,25,26,27,28,35,36,37,38,39,40,51,52,53,54,55,56,57,58,59,60)]),
+         `TOTAL CAPACITY` = `TOTAL EMPLOYED` + `TOTAL VACANCIES`,
+         vacancy_ratio = round(`TOTAL VACANCIES`/`TOTAL CAPACITY`*100, 1),
+         volunteers = case_when(`25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`>0~1,
+                                T~0)) %>% 
+  select(1,2,66:75, everything()) 
+################################################################
+
+basedata %>% 
+  select(`4: Service/Provider Name:`, 
+         `6: Please select your NHS Health Board and HSCP: Health Board`, 
+         `8: Please select the option which best describes your service category:`, 
+         `26: What is your service's overall caseload as at 1 November 2021`) %>%
+    mutate(`26: What is your service's overall caseload as at 1 November 2021`= ifelse(is.na(`26: What is your service's overall caseload as at 1 November 2021`),
+                                                                                       0,
+                                                                                       `26: What is your service's overall caseload as at 1 November 2021`)) %>% 
+  right_join(Staffing_byorg, by=c("4: Service/Provider Name:", 
+                                  "6: Please select your NHS Health Board and HSCP: Health Board",
+                                 "8: Please select the option which best describes your service category:", 
+                                 "26: What is your service's overall caseload as at 1 November 2021")) %>% 
+  group_by(`6: Please select your NHS Health Board and HSCP: Health Board`) %>% 
+  summarise(summed_emp = sum(`TOTAL EMPLOYED`),
+            summed_vac = sum(`TOTAL VACANCIES`)) %>% 
+  mutate(total = summed_emp +summed_vac,
+         prop = round(summed_vac/total*100,1)) %>% 
+  arrange(desc(prop)) %>% 
+  filter(!is.na(prop)) %>% 
+  mutate(`NHS Board` = `6: Please select your NHS Health Board and HSCP: Health Board`,
+         `Reported employment` = scales::comma(summed_emp),
+         `Reported vacancies` = scales::comma(summed_vac),
+         `Reported total capacity` = scales::comma(total),
+         `Vacancy rate` = paste0(prop,"%")) %>% 
+  select(-`6: Please select your NHS Health Board and HSCP: Health Board`, -summed_emp, -summed_vac, -total,-prop) %>% 
+  add_row(`NHS Board` = "Total",
+    `Reported employment`="1,572.8",
+          `Reported vacancies` = "152.2",
+          `Reported total capacity` = "1,725.0",
+          `Vacancy rate` = "8.8%") %>% 
+  flextable() %>% 
+  width(j=1, 2.5) %>% 
+  width(j=c(2,3,4,5), 1.2) %>% 
+  add_header_row(colwidths = 5,
+                 values = "Table 2: Reported  Vacancy rates in Drug and Alcohol Services by NHS Board (as of 1 November 2021)") %>% 
+  bold(part = 'header') %>% 
+  bold(j=5) %>% 
+  bold(i=13) %>%
+  vline(j=4, border = officer::fp_border()) %>% 
+  vline(j=1, border = officer::fp_border()) %>% 
+  hline(i=12, border = officer::fp_border()) %>%
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  align(j=1, part = 'all') %>% 
+  add_footer_row(top = F, 
+                 colwidths = 5,
+                 values = "n=88")
+
+```
+
+These figures show that vacancy rates varied widely across the sector. The highest rates by health board belonged to Forth Valley (17.9%), Tayside (13.7%) and Highland (13.2%), while respondents from Fife and Orkney reported no vacancies^[Note that Borders and Shetland are omitted here because no services from those Health Boards responded to the survey]. However these figures must be contextualised with the response rates found in Figure 1; Orkney had a 100% response rate – the highest in the sector – while Fife's response rate was amongst the lowest at 33.3%. Meanwhile, Greater Glasgow & Clyde reported the highest *absolute* number of vacancies, but given the number of services in that region the vacancy rate amounted to 8.4%. 
+
+Myriad factors influence geographic patterns in vacancy rates. In particular, health and social care services in remote, rural and island areas face distinct staffing issues^[[Scottish Government, 2019](https://www.gov.scot/publications/national-health-social-care-integrated-workforce-plan/pages/5/)]. However, the vacancy rates from this survey suggest that recruiting to frontline roles in substance misuse is problematic for both rural and urban areas. For example, qualitative data showed that relatively low pay for recovery workers – especially in third sector settings – as well as the increasing cost of living in the central belt, were deterring potential applicants. Sustainable workforce planning must therefore account for the specific challenges to recruitment and retention for services in these respective areas.
+
+### 3.3.2 Vacancy rates by service type
+
+Employment and vacancy figures also varied by service type, as shown in Figure 3. Third sector organisations reported the highest absolute totals for employment (577.3) and vacancies (49.1), which was to be expected given their high survey response rates as shown in Figure 2. Conversely, ADPs reported the lowest totals for each, followed closely by Local Authority organisations. Caution must be exercised when calculating vacancy rates for categories with small numbers. This explains why ADPs, despite reporting the lowest absolute numbers, reported the highest vacancy rates.
+
+```{r Figure 3, fig.dim=c(7,4)}
+Staffing_byorg %>% 
+  select(1:9) %>% 
+  pivot_longer(`TOTAL EMPLOYED`:`TOTAL VACANCIES`, names_to="Category", values_to = "Total") %>% 
+  group_by(`8: Please select the option which best describes your service category:`, Category) %>% 
+  summarise(sums = sum(Total)) %>% 
+   mutate(`Organisation Type` = str_wrap(`8: Please select the option which best describes your service category:`,12),
+          Category = case_when(Category == "TOTAL EMPLOYED"~"Reported Employment",
+                               T~"Reported Vacancies")) %>% 
+  ggplot(aes(x=`Organisation Type`, y=sums, fill=Category)) +
+  geom_col(position = "dodge")+
+  theme +
+  coord_flip() +
+  geom_text(aes(label =  scales::comma(sums, accuracy=.1)), position = position_dodge(1), hjust = -.01) +
+  labs(x="Organisation type",
+       y="WTEs",
+       title = "Figure 3: Employment and vacancy totals across all roles \nby service category (as of 1 November 2021)") +
+  scale_fill_manual(values = c("#0065bd", "#912688")) +
+  scale_y_continuous(labels=scales::comma,
+                     limits=c(0,620, by=100),
+                     breaks = seq(0,620, by= 100))
+
+
+```
+
+Vacancy totals amongst NHS and Health and Social Care Partnership organisations were nearly equal to that of the third sector, while their total capacity (employment plus vacancies) was substantially lower. This is reflected in the vacancy rates, shown in Table 3 below. NHS organisations reported vacancy rates of 10.1%, with HSCPs close behind at 9.1%. While third sector organisations reported the highest absolute number of vacancies, their vacancy rate was nearly the lowest in the sector (7.8%), just ahead of Local Authority services (7.7%).
+
+Vacancy rates have important implications irrespective of organisation type. The qualitative responses outlined the ways in which the implications of excessive vacancies manifested themselves:
+
+> "Demands of service are higher than workforce. Patient's requiring higher outreach for crisis response and engagement. Caseload's are 30-40% higher what would be workable for amount of enquiries and problems encountered with our vulnerable patient group." [NHS]
+
+> "There is no give in the system when there is sickness staff are having to manage other staff's caseloads as well as their own." [NHS]
+
+> "We are managing caseloads of staff on maternity leave and long term absence." [NHS]
+
+In addition, a number of responses noted, or implied, that they required more staff. However, it is not clear if this meant they had unfilled vacancies or thought that having more staff overall would benefit their service. The qualitative data supported the quantitative findings, as those organisations highlighting vacancy issues were predominantly health service-oriented (i.e. NHS, Integrated Service and HSCPs). Meanwhile just a single third sector organisation identified this as an issue. 
+
+
+```{r table3}
+
+#Vacancy rate by service category
+Staffing_byorg %>% 
+  group_by(`8: Please select the option which best describes your service category:`) %>% 
+  summarise(summed_emp = sum(`TOTAL EMPLOYED`),
+            summed_vac = sum(`TOTAL VACANCIES`)) %>% 
+  mutate(total = summed_emp +summed_vac,
+         prop = round(summed_vac/total*100,1),
+         `Organisation Type` = `8: Please select the option which best describes your service category:`,
+         `Reported employment` = scales::comma(summed_emp, accuracy = .1),
+         `Reported vacancies` = scales::comma(summed_vac, accuracy = .1),
+         `Reported total capacity` = scales::comma(total, accuracy = .1),
+         `Vacancy rate` = paste0(prop,"%")) %>% 
+  arrange(desc(prop)) %>% 
+  select(-`8: Please select the option which best describes your service category:`, -summed_emp, -summed_vac, -total,-prop) %>%
+  add_row(`Organisation Type` = "Total", 
+          `Reported employment` = "1,572.8",
+          `Reported vacancies` = "152.2",
+          `Reported total capacity` = "1,725.0",
+          `Vacancy rate` = "8.8%") %>% 
+  flextable() %>% 
+  width(j=1, 2.6) %>% 
+  width(j=c(2,3,4,5), 1.2) %>% 
+  add_header_row(colwidths = 5,
+                 values = "Table 3: Vacancy rates by organisation type (as of 1 November 2021)") %>% 
+  bold(part = 'header') %>% 
+  bold(j=5) %>% 
+  vline(j=4, border = officer::fp_border()) %>% 
+  vline(j=1, border = officer::fp_border()) %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  hline(i=6, border = officer::fp_border()) %>% 
+  bold(i=7) %>% 
+  align(j=1, part='all')
+
+
+
+```
+
+### 3.3.3 Vacancy rates by role type
+
+The 1,572.8 employed WTEs reported across all respondents was comprised of the following staff:
+
+  * 974.7 non-clinical
+  * 419.5 nursing
+  * 78.5 ‘other’ (i.e. not listed elsewhere) 
+  * 67.9 medical
+  * 32.2 psychology
+
+Figure 4 shows each role's share of the total, standardised to 100 – that is, each square represents one percent of the workforce reported from this survey:
+
+```{r figure4, fig.dim=c(7,4)}
+staffing_wrangle <- function(df, profession) { 
+df %>% 
+    select(5,23:33,36:51,54:65, 68:87, 95:99, 106:109) %>% 
+    pivot_longer(`9.1.1: Number of whole-time equivalent nursing posts as at 1 November 2021:: Employed (WTEs): Nurses - Band 5`:
+                   `21.2.5: Number of whole-time equivalent 'other' posts as at 1 November 2021 : Employed (WTEs): -`,
+                 names_to = "Job Type",
+                 values_to = "Total") %>% 
+    mutate(Category = case_when(str_detect(`Job Type`, "nursing") ~ "Nursing",
+                                str_detect(`Job Type`, "medical") ~ "Medical",
+                                str_detect(`Job Type`, "psychology") ~ "Psychology",
+                                str_detect(`Job Type`, "PAID STAFF ONLY") ~ "Non-clinical",
+                                T~ "Other"),
+           Employment = case_when(str_detect(`Job Type`, "Employed") ~ "Employed",
+                                  T~"Vacancy"),
+           `Job Type` = str_remove_all(
+             `Job Type`,
+             "Number of whole-time equivalent | posts as at 1 November 2021|PAID STAFF ONLY|Employed|Vacancies|WTEs|WTE|nursing|medical|psychology|[().:']"),
+           `Job Type` = case_when(Category == "Non-clinical"~str_sub(`Job Type`, 34, 100),
+                                  T~str_sub(`Job Type`, 5,100)),
+           `Job Type` = case_when(str_detect(`Job Type`, "Outreach workers") ~"Outreach workers",
+                                  str_detect(`Job Type`, "COSCA") ~"COSCA-accredited counsellors",
+                                  T~`Job Type`),
+           `Job Type` = str_trim(`Job Type`)) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  group_by(`Job Type`, Category, Employment) %>% 
+  summarise(sums = sum(Total)) %>% 
+  filter(Category == profession) %>% 
+  pivot_wider(names_from = `Job Type`, values_from = sums) %>% 
+  mutate(TOTAL = rowSums(.[c(-1,-2)])) %>% 
+  pivot_longer(-c(Category, Employment), names_to = "Job Type", values_to="Total")
+}
+##################################################
+
+wafflechart <- rbind((staffing_wrangle(basedata, "Nursing") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Medical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Psychology") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Non-clinical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1)))) %>% 
+  filter(`Job Type` == "TOTAL") %>% 
+  select(Category, Employed) %>% 
+  ungroup() %>% 
+  add_row(Category = "Other", Employed = 78.49) %>% 
+  mutate(total = sum(Employed),
+         prop = round(Employed/total*100,0),
+         Category = as.factor(Category)) %>% 
+  arrange(desc(prop))
+
+wafflechart$Category <- factor(wafflechart$Category, levels = c("Non-clinical", "Nursing", "Other", "Medical", "Psychology"))
+
+library(waffle)
+
+ggplot(wafflechart, aes(fill=reorder(Category,prop), values = prop))+
+  geom_waffle(n_rows = 5, size=.33, colour = "white")+
+  scale_fill_manual(values = c("#deebf7","#9ecae1","#4292c6", "#08519c", "#08306b"))+
+  # scale_fill_brewer(palette = "Blues")+
+  coord_equal() +
+  theme_void() +
+   theme(legend.position = 'bottom',
+        legend.text=element_text(size=10),
+        legend.title=element_blank(),
+        plot.title = element_text(size=16),
+        # panel.grid.major.x = element_blank(),
+        panel.grid.minor.x=element_blank(),
+        panel.grid.minor.y = element_blank()) +
+  labs(title = "Figure 4: Proportional distribution of employed WTEs across \nall respondents",
+       caption = "n=1,572.8 WTEs") +
+  guides(fill=guide_legend(reverse=T))
+
+```
+
+For clinical roles, the three highest employment totals overall were all in nursing in the order of: band 6 nurses (192.3 WTEs) band 5 nurses (132.0 WTEs) and band 7 nurses (60.9 WTEs). Other prevalent positions included consultant psychiatrists (26.3 WTEs), 'other' nurses (23.7 WTEs) and staff/specialty doctors (17.8 WTEs). For non-clinical roles, the greatest employment numbers were for 'drug/alcohol/recovery workers not included above' (325.3 WTEs), however services did not specify what these roles were. There were also high reported totals of admin/support staff (202.8 WTEs) and family support workers (100.0 WTEs). A breakdown of the individual job types under each of these headings can be found in Annex 2.
+
+However, these figures must once again be examined in the context of their vacancies. Table 4 shows these figures by category. Psychology roles had the highest vacancy rates across the sector (18.3%), followed by medical (16.4%). There was a substantial gap in vacancy rate between these two categories and nursing (9.6%), however nursing positions comprise by far the greatest employment totals amongst clinical roles.
+
+```{r Table4}
+
+staffing_wrangle <- function(df, profession) { 
+df %>% 
+    select(5,23:33,36:51,54:65, 68:87, 95:99, 106:109) %>% 
+    pivot_longer(`9.1.1: Number of whole-time equivalent nursing posts as at 1 November 2021:: Employed (WTEs): Nurses - Band 5`:
+                   `21.2.5: Number of whole-time equivalent 'other' posts as at 1 November 2021 : Employed (WTEs): -`,
+                 names_to = "Job Type",
+                 values_to = "Total") %>% 
+    mutate(Category = case_when(str_detect(`Job Type`, "nursing") ~ "Nursing",
+                                str_detect(`Job Type`, "medical") ~ "Medical",
+                                str_detect(`Job Type`, "psychology") ~ "Psychology",
+                                str_detect(`Job Type`, "PAID STAFF ONLY") ~ "Non-clinical",
+                                T~ "Other"),
+           Employment = case_when(str_detect(`Job Type`, "Employed") ~ "Employed",
+                                  T~"Vacancy"),
+           `Job Type` = str_remove_all(
+             `Job Type`,
+             "Number of whole-time equivalent | posts as at 1 November 2021|PAID STAFF ONLY|Employed|Vacancies|WTEs|WTE|nursing|medical|psychology|[().:']"),
+           `Job Type` = case_when(Category == "Non-clinical"~str_sub(`Job Type`, 34, 100),
+                                  T~str_sub(`Job Type`, 5,100)),
+           `Job Type` = case_when(str_detect(`Job Type`, "Outreach workers") ~"Outreach workers",
+                                  str_detect(`Job Type`, "COSCA") ~"COSCA-accredited counsellors",
+                                  T~`Job Type`),
+           `Job Type` = str_trim(`Job Type`)) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  group_by(`Job Type`, Category, Employment) %>% 
+  summarise(sums = sum(Total)) %>% 
+  filter(Category == profession) %>% 
+  pivot_wider(names_from = `Job Type`, values_from = sums) %>% 
+  mutate(TOTAL = rowSums(.[c(-1,-2)])) %>% 
+  pivot_longer(-c(Category, Employment), names_to = "Job Type", values_to="Total")
+}
+
+rbind((staffing_wrangle(basedata, "Nursing") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Medical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Psychology") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Non-clinical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1)))) %>% 
+  mutate(`Reported employment` = scales::comma(Employed, accuracy = .1),
+         `Reported vacancies` = scales::comma(Vacancy, accuracy = .1),
+         `Reported total capacity` = scales::comma(total, accuracy = .1),
+         `Vacancy rate` = paste0(vacancyrate,"%")) %>% 
+  arrange(desc(vacancyrate)) %>% 
+  filter(str_detect(`Job Type`, "TOTAL")) %>% 
+  select(-Employed, -Vacancy, -total, -vacancyrate, -`Job Type`) %>% 
+  ungroup() %>% 
+   add_row(Category = "Other", 
+          `Reported employment` = "78.5",
+          `Reported vacancies` = "-",
+          `Reported total capacity` = "-",
+          `Vacancy rate` = "-") %>% 
+  add_row(Category = "Total", 
+          `Reported employment` = "1,572.8",
+          `Reported vacancies` = "152.2",
+          `Reported total capacity` = "1,725.0",
+          `Vacancy rate` = "8.8%") %>% 
+  flextable() %>% 
+  width(j=1, 1.8) %>% 
+  width(j=c(2,3,4,5), 1.2) %>% 
+  add_header_row(colwidths = 5,
+                 values = "Table 4: Reported employment and vacancy totals by role type across all respondents (as of 1 November 2021)") %>% 
+  bold(part = 'header') %>% 
+  bold(j=5) %>% 
+  bold(i=6) %>% 
+  vline(j=4, border = officer::fp_border()) %>% 
+  vline(j=1, border = officer::fp_border()) %>% 
+  hline(i=5, border = officer::fp_border()) %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  align(j=1, part = 'all') %>% 
+  add_footer_row(top = F, 
+                 colwidths = 5,
+                 values = "Note: Vacancy information was not sought for roles in the 'Other' category")
+
+
+```
+
+Breaking these numbers down by individual role can be misleading given the small numbers in particular areas (a full table can be found in Annex 3). Of those roles with a reported capacity over 5 WTEs, the greatest vacancy rates were in psychological therapists (38.9%), locum doctors (22.9%) and consultant psychologists (22.7%). The highest vacancy rates in nursing was for band 5 nurses (15.7%). This is despite this role having the second highest clinical employment numbers in the sector, underscoring the crucial role that nursing personnel play in delivering frontline services. Overall, 13 of the 29 individual roles queried in the survey (44.8%) reported vacancy rates exceeding 10%.
+
+No vacancies were reported for family support workers, counselling psychologists, clinical associates in applied psychology, band 8 nurses, or 'other' nurses. Amongst the lowest reported vacancy rates were service managers (2.1%). By contrast, the vacancy rate for team leaders was 10.0%. This is especially notable given the high WTE totals reported for both these roles (see Annex 2). This suggests that although there is high demand for roles with a leadership component, there are relatively few opportunities for progression into management positions within frontline services. This may well contribute to the retention issues reported in the qualitative data. 
+
+Finally, a variety of services listed the core support role that volunteers play in delivering services, especially given that many of them have lived experience. 14% of respondents reported people working for them in a strictly volunteer/unpaid capacity. The qualitative data showed that:
+
+> "The Health and Wellbeing of our staff and volunteers is vital in delivering our services" [Third sector organisation]
+
+> "50% of paid staff identify as in recovery and 100% of volunteer staff also do." [Integrated services]
+
+> "...we had a volunteer with lived experience who worked alongside the ALN's via third sector organisation Alcohol and Drugs Action. This involved meeting patients in hospital prior to discharge with the aim of engaging them in the recovery community and ADA gorups[sic] and activities. Unfortunately this work was suspended due to hospital visiting restrictions during the pandemic. We are looking at starting this work again as it was successful." [NHS]
+
+Several organisations reported employing volunteer coordinators to help manage the number of volunteers they have. The utility of volunteers in health and social care settings the other UK nations has been discussed elsewhere^[see [Lever, 2021](https://www.nhsconfed.org/articles/unlocking-power-volunteering-will-help-tackle-challenges-facing-our-nhs)]. However, this could be explored further in the Scottish drug and alcohol services context.
+
+### 3.3.4 Recruitment and retention
+
+One major theme emerging from the qualitative responses concerned the way in which services are funded, and the impact this has on recruitment. A number of responses noted that short-term funding could lead to fixed term contracts. This made these posts less attractive for potential staff due to their precarious nature, and thus more difficult to recruit for. Examples of responses include:
+
+> "...lengthy or permanent funding is preferable due to difficulty recruiting to 6 month or 1 year posts and development and embedding of practice." [HSCP]
+
+> "Funding being permanent or for longer fixed terms rather than non-recurring which makes recruitment challenging.” [NHS]
+
+Staff salaries were also extensively commented upon:
+
+> "It is still incredibly difficult to recruit skilled and experienced staff as our salary scales cannot match those of statutory organisations such as local authority and NHS.  Therefore, there is a need to increase budgets for contracts to allow organisations like ours to increase salary and competitively recruit staff.” [Third sector organisation]
+
+> “Higher pay scales all round.  We work closely with the housing sector (housing officers) and the pay gap is very disproportionate for the type of work we comparatively do.” [Third sector organisation]
+
+HSCPs, NHS, ADPs and third sector organisations all separately expressed these sentiments. This indicates that pay and conditions are considered a challenge across the entire drug and alcohol workforce, rather one particular service type.
+
+Crucially, respondents highlighted that the difficulties of recruiting and retaining staff were not simply matters of remuneration. There is a strong need for the drugs and alcohol workforce to be able to access continuing professional development and training opportunities. However this poses several challenges, one of which is a matter of geography. For example: 
+
+> “...training is not delivered locally so I have to travel if I want to access training.” [NHS]
+
+Perhaps a more important consideration is the access and funding to undertake specialist courses in higher education institutions. This was highlighted especially in terms of career progression for staff in non-clinical roles:
+
+> "Increase bursaries to allow more staff to do post graduate study to retain them not just SVQ health and Social care but specialist courses at University of Stirling and West of Scotland around addiction and harm reduction... As non clinical staff the staff group are not always valued or seen as less professional than clinical staff. SVQ not valued by other professions in same way as a degree." [Third sector organisation]
+
+Finally, it was noted that more needed to be done to showcase the valuable jobs that are done by people in this sector. This was directly related to a call for more recognition for those that have opted to work in settings as challenging as frontline drug and alcohol services. For example: 
+
+> "Strategically, the workforce in our services could be improved if they were given recognition as a specialist professional role. Drug and alcohol services are marginalised and often stigmatised as our service users are, the work that we do, the care and support that we provide is not always understood or appreciated by wider health and social care.” [Third sector organisation]
+
+In summary, the recruitment and retention issues facing the sector are diverse and multifaceted, and differ by organisation type. Funding and compensation remain major issues, as is the case across the entire health and social care workforce. However, respondents also highlighted shortcomings in career development and progression, as well as a general lack of appreciation/understanding of what working in frontline services entails. This underscores the need for increased investment as well as a cultural shift in perceptions.
+
+## 3.4 Caseloads
+
+As well as asking about staffing, the survey asked respondents to speak to their caseloads. For this research, a caseload corresponded to the number of service users being managed by a particular frontline employee. Total caseloads across the sector at 1 November 2021 varied substantially, with organisations reporting caseloads ranging from 5 to 1,405 service users. Moreover, caseloads per frontline staff also depended on service size, type and location. 
+
+```{r Fig5, fig.dim=c(7,3.5)}
+Staffing_byorg %>% 
+  filter(`8: Please select the option which best describes your service category:` != "ADP") %>% 
+  mutate(`8: Please select the option which best describes your service category:` = case_when(`8: Please select the option which best describes your service category:` == "Health and Social Care Partnership"~"HSCP", 
+                                                                                               T~ `8: Please select the option which best describes your service category:`)) %>% 
+  ggplot(aes(x=`8: Please select the option which best describes your service category:`,
+             y=`27: Of those workers with a caseload, what is the average number of service users being case-managed by each frontline WTE worker:`)) +
+  geom_boxplot()+
+  theme+
+  labs(y="Average service users per WTE employee",
+       x="Organisation type",
+       title = "Figure 5: Average number of service users per frontline WTE \nemployee by service type") +
+  scale_y_continuous(breaks = seq(0,125, by= 10))
+
+```
+
+Figure 5 shows box and whisker plots of average caseloads by WTE employee broken down by service type. Staff at HCSPs and NHS organisations reported the highest median caseloads per WTE employee, at 46 and 28 respectively. Note that these two organisation types had amongst the highest vacancy rates, as shown in Table 3. These charts also speak to the diversity of service size, as evidenced by the rather wide inter-quartile ranges of both NHS and integrated services. There are also several outliers in average caseload amongst third sector  organisations.
+
+In the qualitative data, high levels of caseloads and referrals were directly highlighted as issues in over one in five responses. Moreover, respondents highlighted the increasing levels of complexity in individual cases. These issues were discussed at length, for example:
+
+> “Demands of service are higher than workforce. Patient’s[sic] requiring higher outreach for crisis response and engagement.  Caseloads are 30-40% higher [than] what would be workable for amount of enquiries and problems encountered with our vulnerable patient group.” [NHS]
+
+> “Caseloads are continually rising and the complexity of cases [is] increasing meaning that workers are spending more time on indeviduals[sic]  and the individuals are spending more time in service.” [Third sector organisation]
+
+> "Team is extremely busy, new referrals each week (10-20) from which people need to be seen within 21 days of referral.” [Integrated service]
+
+
+## 3.5 Caseload and employee wellbeing
+
+Respondents outlined specific resource implications in relation to caseload. First, service users with multiple complex needs require higher levels of support, and over longer periods of time. As one Integrated Service succinctly remarked, "Caseload number does not reflect complexity". Other respondents explained further:
+
+> "We work with increasingly complex individuals who along with significant drug or alcohol issues may also have statutory requirements of engagement from C&F[children and families] and CJ[criminal justice]. Many of our SU [service users] have complex multiple physical and MH[mental health] needs and there may be issues around capacity." [Local authority]
+
+Equally important to these caseload trends is how they impact individual staff wellbeing. In the UK, mental health conditions (stress, depression, anxiety) alone accounted for as much as 9% of overall work absences in 2020^[[ONS, 2021](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/datasets/sicknessabsenceinthelabourmarket)]. These issues are particularly acute in health and social care. So severe is this issue that in 2020, NHS 24 established a dedicated national helpline to provide round-the-clock mental health support specifically for health and social care workers^[[Scottish Government, 2020](https://www.gov.scot/news/more-mental-health-support-for-health-and-social-care-staff/)].
+
+Respondents in this survey highlighted how increasing workloads were leading to mental and physical health issues, attrition and burnout amongst frontline workers. Over 10% of respondents flagged how these factors impacted staff sickness, which itself has a cascading effect: overworked employees become progressively more stressed, which leads to them taking more sick days, which then leads to other staff having to manage their caseloads, which leads to stress amongst *those* employees, which results in more sick days, and so on. As one NHS organisation noted:
+
+> "At one point in summer 2021 the team only had one registered nurse and team lead covering caseload for a team of 8. Team lead is not supposed yo[sic] have a casleoas[sic]. Most of their work was not completed ans[sic] they are also supposed to support another team tooo[sic].. This then lead to burnout of one team members[sic]. The team has always been sitting with vacancies or long term sick since may[sic] 2019 with between 2-6 staff short... It is very stressful at times" [NHS]
+
+NES has noted how sickness absence can also lead to increased expenditure on supplementary staff, such as medical locum and agency nurses^[[NES, 2021](https://turasdata.nes.nhs.scot/media/umdg5xnk/workforce-report-june-2021-final.pdf)], which could prove detrimental for services already suffering from funding shortfalls, as highlighted above. Finally, the data showed that all but one of those organisations highlighting staff sickness were either NHS or HSCPs, emphasising the health service component of this issue.
+
+In addition to this qualitative information, services were asked to report how many days had been lost to sickness amongst paid employees over the past six months (1 May to 1 November 2021^[Once again using NES's definition of sickness absence, Ibid.]). Respondents reported a variety of values ranging from 0 to 400, with a median reported rate of 34 sick days per service. To account for the variation in organisation size, a sickness rate was computed by dividing the number of sick days per WTE employee. The results of this are shown in Figure 6.
+
+```{r fig6, fig.dim=c(7,4)}
+# basedata %>% 
+#   mutate(sick_days = `24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`) %>% 
+#   select(sick_days) %>% 
+#   filter(!is.na(sick_days)) %>% 
+#   ggplot(aes(x=sick_days)) +
+#   geom_histogram(color="black", fill="#0065bd", bins = 70) +
+#   geom_vline(aes(xintercept=median(sick_days)),
+#              color="#912688", 
+#              linetype="dotdash",
+#              size=1) +
+#   theme+
+#   labs(x="Sick days",
+#        y="Organisation count",
+#        title = "Figure 7: Number of days lost to sickness amongst paid staff",
+#        caption = "Note: Omits 15 respondents who did not input a value") +
+#   scale_x_continuous(breaks = seq(0, 400, 20))
+
+join_not <- basedata %>% 
+  mutate(sick_days = `24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`) %>%
+  filter(is.na(sick_days)) %>% 
+  select(`4: Service/Provider Name:`,
+         `8: Please select the option which best describes your service category:`,
+         `2: Email address:`) %>% 
+  mutate(flag=1)
+
+linreg <- anti_join(Staffing_byorg, join_not, by=c("4: Service/Provider Name:", 
+                                              "8: Please select the option which best describes your service category:",
+                                              "2: Email address:")) %>%
+  mutate(caseload = `27: Of those workers with a caseload, what is the average number of service users being case-managed by each frontline WTE worker:`,
+         sickdays = (log(`24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`+1)),
+         sick_days= `24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`)
+
+
+linreg %>%
+  mutate(sickrate = sick_days / `TOTAL EMPLOYED`,
+         medians = median(sickrate)) %>%
+  select(`4: Service/Provider Name:`,
+         `8: Please select the option which best describes your service category:`,
+         sickrate,
+         medians) %>%
+  filter(sickrate<50) %>% 
+  # group_by(`8: Please select the option which best describes your service category:`) %>%
+  # summarise(average_sickrate = mean(sickrate))) %>%
+  ggplot(aes(x = sickrate)) +
+  geom_histogram(color = "black", fill = "#0065bd", bins = 20) +
+  geom_vline(aes(xintercept = median(sickrate)), 
+             color = "#912688",
+             linetype = "dotdash",    
+             size = 1) +
+  theme +
+  labs(x="Sick days per WTE employee",
+       y="Organisation count",
+       title = "Figure 6: Number of days lost to sickness per employed WTE \nstaff between 1 May and 1 November 2021",
+       caption = "Note: Omits 15 respondents who did not input a value")
+
+```
+
+The distribution of sick days per WTE employee is skewed right, with a median sickness rate of 3. However there are some notable outliers, with 23 respondents (31.0%) reporting sickness rates greater than 6. That means that, over the six-month reporting period from 1 May to 1 November, each employee in those services took an average of one sick day a month. These figures show that sick absence is a key issue for drug and alcohol services, which may have short and long term impacts on delivery and capacity.
+
+To better understand the factors underpinning staff absences, multiple linear regression was used to build the best model for explaining the prevalence of sick days – i.e. the dependent variable – in drug and alcohol services. Not only was the overall model significant, but a statistically significant relationship was observed between total sick days taken and average caseload per WTE employee. When controlling for certain independent variables, a one unit increase in the average caseload per WTE employee will increase the number of sick days taken by 5% (see Annex 4 for technical details). This suggests that the employee-service user interface is a more important indicator of staff well-being than is the ratio of employees to vacancies, or the presence of volunteers. Such a finding is especially important for staff given how volatile caseloads and referrals to drug and alcohol services can be.
+
+
+## 3.6 Service delivery and design
+
+Linked to the issue of high caseloads and high referrals was a theme which emerged solely from the qualitative responses. The last question of the survey asked respondents to “Please use this space to outline any views on how the workforce in drug and alcohol services could be improved” in an open text format. 
+
+13.6% of responses highlighted the necessity of service review and redesign of some drugs and alcohol services. Most of the text responses related to services in the respondents’ local area, and in most cases identified an aspect of the service which could be overhauled to address localised issues. For example: 
+
+> “Lack of choice for individuals regarding ORT [opioid replacement therapy] prescribing as shared care GP clinics are very limited.  This causes caseloads within the service to continually grow with no exit for service users to a “step down” service for prescribing even when they have moved on in recovery and become stable in treatment.” [HSCP]
+
+> “Introduce local alcohol detoxification beds or increase the number of board wide available beds.” [HSCP]
+
+> “Better rehabilitation services within the local authority area – the current service is generally at capacity with a lengthy waiting list.” [ADP]
+
+When viewed in the aggregate, these responses suggest that (in some places at least) services are not set up to operate as efficiently as possible. This has implications for service delivery as there are no appropriate destinations for service users to move on to, and they then remain in the existing services. This is not only detrimental to these individuals but it means services have higher caseloads as they cannot ‘discharge’ people. In the meantime, however, these services continue to receive new referrals. As the quantitative data around caseloads, sick days and vacancies shows, this has a detrimental impact on the workforce and the services they provide.
+
+## 4. Strengths and limitations
+
+There were a number of limitations associated with this research that must be accounted for when considering the findings. First, although the response rate was acceptable, it was based on a relatively small population (206 services across Scotland). Moreover, as a survey, respondents were self-selected which might introduce an element of bias. Finally, this was a snapshot of the state of services, asking organsiations to respond as of 1 November 2021. The lack of longitudinal data complicates efforts to extrapolate these findings over time.
+
+Nevertheless, this report presents important findings about Scotland's drug and alcohol workforce across a variety of themes. It also provides estimates of the size of this workforce for the first time. People employed in drug and alcohol services play a key role in delivering health and social care services to those suffering from substance misuse. This information, along with the findings emerging from a rapid evidence review and review of skills and qualifications, therefore provides a novel and nuanced perspective of not only the myriad challenges that this sector faces, but also a strong evidence base for how to inform policy development in this space.
+
+\newpage 
+## Annex 1: Number of responses and number of services who received the survey by Health Board
+```{r Figend, include = T, fig.dim=c(8,9.5)}
+
+
+surveyrecipients <- readxl::read_xlsx("C:/Users/u449921/Documents/Workforce/Survey work/Survey_recipients.xlsx") %>%
+  mutate(`Health Board` = str_replace(`Health Board`, "NHS ", ""),
+         cat = "Number of services on DAISy") %>%
+  group_by(`Health Board`, cat) %>%
+  summarise(total = n())
+
+Fig1 <- basedata %>%
+  group_by(`6: Please select your NHS Health Board and HSCP: Health Board`) %>%
+  summarise(total = n()) %>%
+  filter(!is.na(`6: Please select your NHS Health Board and HSCP: Health Board`),
+         `6: Please select your NHS Health Board and HSCP: Health Board` != "Borders") %>%
+  mutate(`Health Board` = `6: Please select your NHS Health Board and HSCP: Health Board`,
+         cat = "Number of survey respondents") %>%
+  select(`Health Board`, cat, total,
+         -`6: Please select your NHS Health Board and HSCP: Health Board`)
+
+bind_rows(surveyrecipients, Fig1) %>%
+  pivot_wider(names_from = cat, values_from = total) %>%
+  replace(is.na(.), 0) %>%
+  mutate(prop = `Number of survey respondents`/`Number of services on DAISy`) %>%
+  pivot_longer(cols = `Number of services on DAISy`:`Number of survey respondents`, names_to = "cat", values_to = "total") %>%
+  ggplot(aes(x=reorder(`Health Board`, prop), y=total, fill = cat)) +
+  geom_col(position = 'dodge') +
+  coord_flip() +
+  theme+
+  theme(legend.title = element_blank())+
+  labs(x="NHS Health Board",
+       caption = "Note: Arranged in order of proportional response rate by health board",
+       title = "",
+       y="Total") +
+  geom_text(aes(label = total), position = position_dodge(1), hjust=-.1) +
+  scale_fill_manual(values = c("#0065bd", "#912688"))
+
+
+
+
+```
+
+\newpage 
+## Annex 2: Employment and vacancy totals of frontline staff by category (WTEs)
+```{r figure 5, include=T }
+
+###################################
+#function for vis
+staffing_plotting <- function(df, plottitle){
+  ggplot(data=df, aes(x=`Job Type`, y=Total, fill = Employment)) +
+    geom_col(position = 'dodge') +
+    theme_bw() +
+    theme(legend.title = element_blank(),
+          legend.position = "bottom")+
+    coord_flip() +
+    geom_text(aes(label = scales::comma(Total, accuracy = .1)), 
+              position = position_dodge(1), 
+              hjust = -.01) +
+    labs(x="Class",
+         y="Whole-time equivalents",
+         title = plottitle)
+}
+
+gridExtra::grid.arrange((staffing_wrangle(basedata, "Medical") %>% 
+                           staffing_plotting("Medical")),
+                        (staffing_wrangle(basedata, "Psychology") %>% 
+                           staffing_plotting("Psychology")),
+                        (staffing_wrangle(basedata, "Nursing") %>% 
+                           staffing_plotting("Nursing")),
+                        (staffing_wrangle(basedata, "Non-clinical") %>% 
+                           staffing_plotting("Non-clinical")),
+                        top = grid::textGrob("Employment and vacancy rates of frontline staff by category (WTEs)", gp=grid::gpar(fontsize=20)))
+
+```
+
+\newpage 
+## Annex 3: Vacancy rates of frontline staff by category (WTEs)
+
+```{r annexb}
+rbind((staffing_wrangle(basedata, "Nursing") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Medical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Psychology") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1))),
+
+(staffing_wrangle(basedata, "Non-clinical") %>% 
+  pivot_wider(names_from = Employment, values_from = Total) %>% 
+  mutate(total = Vacancy+Employed,
+         vacancyrate = round(Vacancy/total*100,1)))) %>% 
+  mutate(`Reported employment` = Employed,
+         `Reported vacancies` = Vacancy,
+         `Reported total capacity` = total,
+         `Vacancy rate` = paste0(vacancyrate,"%")) %>% 
+  arrange(desc(vacancyrate)) %>% 
+  filter(!is.na(vacancyrate)) %>%
+    select(-Employed, -Vacancy, -total, -vacancyrate,) %>% 
+  flextable() %>% 
+  width(j=1, 1.1) %>% 
+  width(j=c(2,3,4,5,6), 1.2) %>% 
+  bold(part = 'header') %>% 
+  bold(i=c(7,10, 16, 21)) %>% 
+  bold(j=6) %>% 
+  vline(j=5, border = officer::fp_border()) %>% 
+  vline(j=2, border = officer::fp_border()) %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  align(j=1)
+
+```
+\newpage
+
+## Annex 4: Caseload and employee well-being: multiple regression analysis
+
+This study sought to better understand the factors underpinning staff absences. Multiple linear regression was therefore performed to build the best model for explaining the prevalence of sick days (i.e. the dependent variable) in drug and alcohol services. 
+
+Of the 88 survey respondents, only the 74 that entered a value for the question “How many days have been lost to sickness amongst paid employees over the past 6 months” were included. Because the number of sick days reported by organisation produced a non-normal distribution (as shown in Figure 6) the natural logarithm of the values were used. In terms of independent variables, all the survey questions having to do with individual role types (i.e. medical, nursing, psychology, non-clinical and ‘other’) were excluded. The final model included three independent variables: average caseload per WTE employee, vacancy rate, and volunteer status. The first two variables were continuous while the latter was categorical, i.e. those organisations reporting volunteers were coded as ‘1’, and all others ‘0’. The statistical assumptions for multiple linear regression were examined and met.
+
+
+```{r Table3_actual}
+join_not <- basedata %>% 
+  mutate(sick_days = `24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`) %>%
+  filter(is.na(sick_days)) %>% 
+  select(`2: Email address:`,
+         `4: Service/Provider Name:`,
+         `8: Please select the option which best describes your service category:`) 
+
+#Joining datasets
+linreg <- anti_join(Staffing_byorg, join_not, 
+                    by=c("2: Email address:",
+                         "4: Service/Provider Name:", 
+                         "8: Please select the option which best describes your service category:")) %>%
+  mutate(caseload = `27: Of those workers with a caseload, what is the average number of service users being case-managed by each frontline WTE worker:`,
+         sickdays = (log(`24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`+1))) 
+
+boo <- lm(sickdays~caseload+vacancy_ratio+volunteers, data = linreg)
+
+```
+
+Table 5 shows that the final model was significant (F = 7.0, p<.001) with an adjusted R2 of .195. In other words, nearly a fifth of overall variance in sick days can be explained by this model alone. The average caseload per WTE employee was statistically significant, with a regression coefficient of .048 (CI 95% .027-.069, p<.001) while the other two independent variables were not significant. Therefore, even when controlling for vacancy rate and the presence of volunteers, a one unit increase in the average caseload per WTE employee will increase the number of sick days taken by 5%^[The dependent variable has been log-transformed, which means the unstandardised coefficient must first be exponentiated to derive the proportional change of a one-unit increase in the independent variable]. This suggests that the employee-service user interface is a more important indicator of staff well-being than is the ratio of employees to vacancies, or the presence of volunteers. Such a finding is especially important for staff given how volatile caseloads and referrals to drug and alcohol services can be.
+
+\newpage
+
+## Annex 5: Estimating total workforce capacity in Scotland’s alcohol and drug services
+
+This section outlines the methodological background for modelling estimates of the employment totals in Scotland's alcohol and drug services. 
+
+Between 22 November and 17 December 2021, Scottish Government (in partnership with Public Health Scotland) surveyed all 206 alcohol and drug services currently delivering on behalf of Alcohol and Drugs Partnerships (ADPs). 88 valid responses were received, for a response rate of 43%. Total employment reported (measured in whole-time equivalents) was  **1,572.8 WTEs**. The response rate and employment total were then used to estimate staff size in the remaining 118 services, thereby providing a basis for approximating the number of WTEs working in Scotland’s frontline services. These figures are shown in Table 5.1, with the underlying methods outlined in forthcoming sections. We therefore estimate that the total workforce in drug and alcohol services in Scotland is between **3,288.0 and 3,768.4 WTEs**.
+
+```{r Table1_annex}
+Methodology <- c("Mean by health board", "Mean of means",
+          "Mean by health board (Winsorization)", "Mean of means (Winsorization)",
+          "Bootstrap")
+
+`Employment(WTEs)` <- c(3768, 3499, 3505, 3288, 3658)
+
+data.frame(Methodology, `Employment(WTEs)`) %>% 
+  flextable() %>% 
+  width(j=1, 3) %>%
+  width(j=2, 2) %>% 
+   add_header_row(colwidths = 2,
+                 values = "Table 5.1: Estimated employment across Scotland's alcohol and drug services by method") %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  bold(part='header') %>% 
+  hline(i=c(2,4), border = officer::fp_border()) %>% 
+  vline(j=1, border = officer::fp_border()) %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  colformat_num(j=2, big.mark=",")
+
+
+```
+
+### Limitations
+
+There are several important limitations with these estimates. The first is they are all predicated on the assumption that the responses received are representative of the entire sector. This is difficult to verify due to the dearth of empirical evidence about alcohol and drug services in Scotland – hence why this project was undertaken in the first place. However this is somewhat mitigated by the fact that the survey was sent to every service in Scotland. The 43% response rate therefore corresponds not to a sample, but to the entire population. In other words, the data here includes almost half of all services in Scotland.
+
+The second limitation is that services were asked to produce employment totals as of 1 November 2021. In the absence of time-series data, this single census date prevents us from observing trends over time, and should instead be considered a 'snapshot' of employment in drug and alcohol services at that date.
+
+The third limitation is that the underlying dataset, comprised of 88 responses, is relatively small. This makes certain descriptive statistics (e.g. mean, standard deviation) sensitive to outliers in the data. However we tried to account for these when producing our estimates, as outlined below.
+
+Finally, no services from Borders and Shetland Health Boards responded to this survey. Although these are relatively small areas, with three services between them, the lack of responses rendered attempts to estimate workforce size in these NHS boards basically impossible. A decision was therefore taken to substitute their staff totals with figures from other areas. Due to the demographic similarities as well as geographical proximity, measures of central tendency from Orkney were used for Shetland, and those from Dumfries & Galloway were used for Borders.
+
+In sum, the 88 responses provided a rich dataset of heretofore-unknown information about frontline drug and alcohol services. However, these limitations underscore the substantial amount of uncertainty when extrapolating this data across the sector. To paraphrase statistician George Box: all models are wrong, but some are useful^[[Box, 1979](https://www.sciencedirect.com/science/article/pii/B9780124381506500182?via%3Dihub)]. We hope the following estimates can be used as an indicator of total employment, and therefore to inform workforce planning in frontline services going forward.
+
+
+### Estimates
+
+The following sections outline how the different workforce totals were estimated. As mentioned, 88 completed surveys were received, and Annex 1 shows how these were distributed across health board. It also shows the number of missing responses per health board, that is, the number of services for which workforce estimates would be produced.
+
+### Pooled means
+
+The first method entailed pooling mean reported employment. This produced two different sets of figures:
+
+  1. **Mean by health board**: The first method entailed calculating the mean number of employees per organisation *per health board*. This provided 12 different means, one for each health board. The figures for the two missing health boards (Borders and Shetland) were substituted with means from adjacent areas, as explained above. These means were then applied to the number of services in that health board that did not respond, thereby producing an estimate of the 'unreported' workforce. This figure was then added to the employment totals reported by survey respondents to produce an estimate of the workforce by health board. When the missing health boards were summed, the total workforce across all health boards amounted to **3,768 WTEs**
+  2. **Mean of means**: The second method entailed calculated the average of the 12 different means reported in step 1, which produced a single sector-wide mean. This 'mean of means' was then applied to the number of services that did not respond in each health board. As above this 'unreported' workforce was then added to the totals reported by survey respondents. When this mean of means was applied to the missing health boards, this produced an aggregated total of **3,499 WTEs**
+
+### Pooled means – Winsorizing
+
+The small number of data points in this analysis means that outliers can unduly influence the distribution. There was one such figure here which was nearly twice as large as the second largest reported employment total. One method of accounting for possibly spurious outliers is via Winsorizing. Briefly, Winsorizing makes inferential statistical procedures that rely on mean and variance more robust, and can be especially useful when data is non-normally distributed^[see [Pek, Wong and Wong, 2018](https://www.frontiersin.org/articles/10.3389/fpsyg.2018.02104/full)] as reported employment in this survey was (Figure 5.2).
+
+```{r Figure2_annex, fig.dim=c(7,3)}
+Staffing_byorg <- basedata %>% 
+  select(3, 5, 20, 23:33,36:51,54:65, 68:87, 95:99, 106:109) %>% 
+  select(-`2: Email address:`, `2: Email address:`,
+         -`25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`,
+         `25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`,
+         -`6: Please select your NHS Health Board and HSCP: Health Board`,
+         `6: Please select your NHS Health Board and HSCP: Health Board`) %>% 
+  mutate_if(is.numeric, ~replace_na(., 0)) %>% 
+  mutate(`TOTAL EMPLOYED` = rowSums(.[c(3,4,5,6,7,13,14,15,16,17,18,19,20,29,30,31,32,33,34,41,42,43,44,45,46,47,48,49,50,61,62,63,64,65)]),
+         `TOTAL VACANCIES` = rowSums(.[c(8,9,10,11,12,21,22,23,24,25,26,27,28,35,36,37,38,39,40,51,52,53,54,55,56,57,58,59,60)]),
+         `TOTAL CAPACITY` = `TOTAL EMPLOYED` + `TOTAL VACANCIES`,
+         vacancy_ratio = round(`TOTAL VACANCIES`/`TOTAL CAPACITY`*100, 1),
+         volunteers = case_when(`25: How many people were working in your service in a strictly volunteer/unpaid capacity as at 1 November 2021:`>0~1,
+                                T~0)) %>% 
+  select(1,2,66:76, everything()) 
+
+Staffing_byorg %>% 
+  select(`TOTAL EMPLOYED`) %>% 
+  ggplot(aes(x=`TOTAL EMPLOYED`))+
+  geom_histogram(color="black",bins=25, fill = "#0065bd") +
+  theme+
+  labs(x="Reported number of employees",
+       y="",
+       title = "Figure 5.2: Distribution of the number of paid employees by \norganisation") +
+  scale_x_continuous(breaks = seq(0,600, by = 10)) 
+  
+
+```
+
+This analysis opted for 90% Winsorization of the total employment by organisation. This transformed all observations greater than the 95th percentile equal to the value at the 95th percentile, and the same for those at the 5th percentile. In effect this weighted the middle 90th percentile more heavily.
+
+Following this data transformation, the two methods outlined in the section above were repeated. This yielded the following figures:
+
+  1. **Mean by health board**: 3,505 WTEs
+  2. **Mean of means**: 3,288 WTEs
+
+
+### Bootstrapping
+
+The final method of producing a sector-wide workforce estimate was via bootstrapping. Bootstrapping is a resampling method where large numbers of samples of the same size are repeatedly drawn, with replacement, from a single original sample. It is especially useful for small datasets and where sample distributions are non-normal^[see [Zhao, 2013](https://www.semanticscholar.org/paper/Bootstrapping-Techniques-in-Statistical-Analysis-in-Zhao/626fb3711be2e8154933752de4824d7461e785fb)].
+
+Remember that this dataset comprised 88 responses, that is, 88 different reported employment totals. So for the bootstrapping protocol, employment totals were randomly selected a total of 88 times (corresponding to the original *n*), producing a new set of sample employment values. Although this resampling was random it was also 'with replacement', which means that a value could be chosen more than once. This process of random selection with replacement was then repeated a total of 500,000 times, thereby producing a matrix of employment totals from which population parameters could be derived. 
+
+Figure 5.3 shows the distribution of the means for each of the 500,000 bootstrapping samples. Note the Gaussian shape of the distribution^[The distribution of the mean of a random sample from a population with finite variance will be approximately normally distributed when the sample size is sufficiently large, regardless of the shape of the original distribution. For more information, see [LaMorte, 2016](https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_probability/BS704_Probability12.html)]. The vertical line denotes the bootstrapped mean of 17.7 employed WTEs per service (CI 95% 13.5-21.8). When applied to the missing services across the sector, then added to the known employment total, this produces a sector-wide sum of **3,658.2 WTEs**. However, the relatively wide confidence interval noted above shows that there is still sizable uncertainty with this estimate.
+
+
+```{r Figure 3_annex, fig.dim=c(7,4)}
+B <- 500000
+n <- nrow(Staffing_byorg)
+
+boot.samples <- matrix(sample(Staffing_byorg$`TOTAL EMPLOYED`, size=B*n, replace=T), B,n)
+
+boot.stats <- apply(boot.samples,1,mean)
+
+ggplot(data.frame(mean_emp=boot.stats),aes(x=mean_emp))+
+  geom_histogram(binwidth=0.25,aes(y=..density..), fill="#0065bd") +
+  geom_density(color="#912688") +
+  geom_vline(aes(xintercept=mean(mean_emp)), linetype="dotdash") +
+  theme+
+  labs(x="Bootstrapped mean of reported employees",
+       title = "Figure 5.3: Distribution of bootstrapped means of \nreported employees (WTEs)",
+       caption= "n=500,000")
+```
+
