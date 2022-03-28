@@ -82,7 +82,7 @@ readxl::read_excel("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/Alcoho
   
  ###########################################################################
 
- #Table 3: DRNS information
+ #Table 1: DRNS information
  
  Institution <- c("Glasgow Caledonian University", "University of Dundee", "Robert Gordon University", "University of Glasgow", "University of Glasgow", "University of Stirling", "University of Stirling",  "University of the West of Scotland", "University of the West of Scotland")
 Title <- c("Substance Use", "Leverhulme Research Centre for Forensic Science","Addiction and Substance Use in a Range of Contexts", "Substance Use in a Contemporary World", "MRC/CSO Social and Public Health Sciences Unit",  "Substance Use", "Salvation Army Centre for Addiction Services and Research", "Contemporary Drug & Alcohol Studies", "Addiction Psychology")
@@ -127,7 +127,7 @@ NES_nonmedical <- read_csv("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/dat
   group_by(Specialty, date, cat) %>% 
   summarise(WTE = sum(Employment))
 
-##Merging
+##Step 2: merging
 summed_professions <- rbind(NES_medical, NES_nonmedical) %>% 
   filter(Specialty != "Adult nurse") %>% 
   ungroup() %>%
@@ -137,7 +137,7 @@ summed_professions <- rbind(NES_medical, NES_nonmedical) %>%
                          T~"N")) %>% 
   filter(cat == "Y")
   
-##Step 2: Create alluvial chart
+##Step 3: Create alluvial chart
 ggplot(data = summed_professions, aes(x=date, y=WTE, alluvium = Specialty)) +
   geom_alluvium(aes(fill = Specialty)) +
   scale_fill_manual(values = c("#3f007d",
@@ -221,10 +221,9 @@ data.frame(Course_Title, `2019-20`, `2020-21`) %>%
  
 ###########################################################################
 
-SDF DATA (bespoke data request)
+#SDF DATA (bespoke data request)
 
 #Figure 5: Training and CPD completion
-
 #This dataset was in poor shape - lots of wrangling required
 
 SDF <- read_csv("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/SDF_training.csv") %>% 
