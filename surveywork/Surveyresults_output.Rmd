@@ -417,6 +417,8 @@ df %>%
 }
 ##################################################
 
+#NOTE THAT THIS CHART HAS TO BE MANUALLY CROPPED WHEN EXPORTED
+
 wafflechart <- rbind((staffing_wrangle(basedata, "Nursing") %>% 
   pivot_wider(names_from = Employment, values_from = Total) %>% 
   mutate(total = Vacancy+Employed,
@@ -867,22 +869,8 @@ Of the 88 survey respondents, only the 74 that entered a value for the question 
 
 
 ```{r Table3_actual}
-join_not <- basedata %>% 
-  mutate(sick_days = `24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`) %>%
-  filter(is.na(sick_days)) %>% 
-  select(`2: Email address:`,
-         `4: Service/Provider Name:`,
-         `8: Please select the option which best describes your service category:`) 
 
-#Joining datasets
-linreg <- anti_join(Staffing_byorg, join_not, 
-                    by=c("2: Email address:",
-                         "4: Service/Provider Name:", 
-                         "8: Please select the option which best describes your service category:")) %>%
-  mutate(caseload = `27: Of those workers with a caseload, what is the average number of service users being case-managed by each frontline WTE worker:`,
-         sickdays = (log(`24: How many days have been lost to sickness amongst paid employees over the past 6 months (1 May 2021 to 1 November 2021):`+1))) 
-
-boo <- lm(sickdays~caseload+vacancy_ratio+volunteers, data = linreg)
+##NOTE THAT FOR SOME REASON, REGRESSION TABLES DO NOT EXPORT ELEGANTLY WHEN OUTPUTTING TO WORD. HAD TO CREATE MANUAL TABLE - SEE REGRESSIONTABLE.DOCX
 
 ```
 
