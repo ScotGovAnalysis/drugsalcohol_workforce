@@ -1,0 +1,501 @@
+---
+title: "Skills and Qualifications in Scotland’s Alcohol and Drug Workforce"
+
+output: 
+  word_document:
+    reference_docx: output_test.docx 
+
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(flextable)
+library(officer)
+library(lubridate)
+library(ggalluvial)
+
+# set chunks defaults
+knitr::opts_chunk$set(
+  echo       = FALSE,
+  message    = FALSE,
+  warning    = FALSE, 
+  dpi = 300
+)
+
+#creating theme
+theme <- 
+  theme_bw()+
+  theme(axis.text.x = element_text(size=14),
+        axis.text.y = element_text(size=14),
+        axis.title = element_text(size = 14),
+        plot.title = element_text(size=20),
+        strip.text.x = element_text(size =12),
+        legend.position = 'bottom',
+        legend.text=element_text(size=14),
+        plot.caption = element_text(size=12))
+
+```
+
+## Key Findings
+
+* Health care, social care and medical subjects are by far the largest in the college sector, with over 10,000 students gaining qualifications in e.g. social/family/community work, counselling/advice work/crisis support, healthcare management/health studies, nursing and psychology;
+* Scottish universities awarded an average of 473 full-person equivalents'-worth of qualifications annually in relevant subjects between 2013-14 and 2018-19;
+* From 2019-20, a new 'drug and alcohol studies' subject classification was implemented, which will provide more robust estimates of provision in higher education settings going forward going forward;
+* Six universities in Scotland are either delivering courses, or house specific research groups, in drug and alcohol/substance use issues;
+* Amongst the NHS workforce there has been a steady average of nearly 10,000 mental health nurses across the sector (measured in whole-time equivalents);
+* Amongst other non-medical staff roles there has been substantial growth, specifically in pharmacy (+71.7%) and clinical psychology & counselling (+55.5%);
+* There has been a modest increase in psychologists working in ‘alcohol and substance abuse’ but numbers remain small (34.6 WTE in Sept 2021);
+* On the medical side, there were notable increases in numbers of general practitioners (+45.6), while those in general psychiatry have remained static;
+* Over 350 health and social care professionals have completed courses in substance abuse offered by NES over the last two years (2019-20 and 2020-21);
+* Enrollments on courses run by Scottish Drugs Forum have increased by 52.8% between 2019 and 2021;
+* Scottish Drugs Forum's Addiction Worker Training Project has enrolled over 300 people with lived experience since 2005, with 89% of trainees successfully completing the course and over 76% going on to employment;
+* 84 health professionals have completed the Royal College of General Practitioners Scotland (RCGP Scotland) Certificate in the Management of Problem Drug Use since its relaunch in 2020. 
+
+These data will be further contextualised by a rapid evidence review, as well as a survey of the extant workforce in services currently on Public Health Scotland's Drug & Alcohol Information System ([DAISy](https://www.isdscotland.org/health-topics/drugs-and-alcohol-misuse/drug-alcohol-information-system/)) that Scottish Government ran between 22 November and 17 December 2021.
+
+\newpage
+
+## 1. Introduction
+
+Scottish Government announced a National Mission on drug-related deaths^[[Scottish Government, 2021a](https://www.gov.scot/policies/alcohol-and-drugs/national-mission/)] in January 2021 to address Scotland’s record numbers of drug-related deaths. Similarly Scotland’s alcohol death rates are also consistently higher than those of England and Wales, as well as the rest of Europe. In addressing these challenges the Scottish Government is committed to building a resilient and skilled workforce in the drug and alcohol treatment sector.
+
+To support this work Health and Social Care Analysis have undertaken a programme of work to better understand the drug and alcohol workforce. This includes both summarizing existing datasets and  generating new data. This paper specifically looks at the data available on skills and qualifications germane to the alcohol and drugs workforce in Scotland. The figures included here are the result of a secondary data collection exercise of both publicly-available and specially-requested data from partner organisations across a variety of sectors. 
+
+The following sections provide a time series overview of the potential skills supply for the drugs and alcohol workforce. Unfortunately, the nature and size of the datasets prevented analysis by protected characteristics (sex, ethnicity, disability status, etc.). However, the figures do comprise people earning relevant qualifications in colleges and universities (i.e. pegged to the [Scottish Credit and Qualifications Framework](https://scqf.org.uk/)), as well as working professionals undertaking professional development, upskilling, or micro-credential opportunities. 
+
+<!-- 1. **Scottish Funding Council for Further and Higher Education (SFC)**: the non-departmental public body in Scotland responsible for monitoring data in further and higher education institutions; -->
+<!-- 2. **NHS Education for Scotland (NES)**: the education and training body responsible for developing and delivering healthcare education and training for the NHS, health/social care sector, and other public entities; and -->
+<!-- 3. **Scottish Drugs Forum (SDF)**: a national membership-based organisation that SG contracts and funds to deliver relevant training to Scotland’s Alcohol and Drug Partnerships (ADPs)   -->
+
+## 2. Further and Higher Education
+
+The Scottish Funding Council for Further and Higher Education ([SFC](https://www.sfc.ac.uk/)) is the non-departmental public body in Scotland responsible for collecting and monitoring data in colleges and universities. This is thus a robust source from which key insights about the skills pipeline into the alcohol/drugs workforce might be derived.
+
+### 2.1 Colleges
+
+Colleges offer a range of courses and study options across many levels of study. They deliver almost 118,000 full-time equivalents' worth of activity every academic year, nearly 30% of which relates to health and care services^[[SFC, 2022](https://www.sfc.ac.uk/publications-statistics/statistical-publications/2022/SFCST012022.aspx)], and are thus primary drivers of skills development and acquisition in Scotland.  
+
+Analytical colleagues at SFC confirmed that there are currently no courses delivered in colleges which include ‘drugs’, ‘alcohol’, ‘addiction’ or ‘substance’ in the title. It was therefore not possible to identify offerings specific to substance use treatment services in Scotland. Therefore this section takes a wider look at the health and social care courses which would be a useful foundation for someone starting a career in the drug and alcohol field.
+
+To this end, a bespoke data request was submitted to SFC for more information on delivery in health care, social care, or medical subjects. This collection only captured students undertaking 'substantive' activity – courses at or above SCQF level 5 (senior phase of high school and up) and having a duration greater than 160 hours. The resulting datasets provide a rich picture of meaningful activity taking place in the college sector that is relevant to this research.
+
+```{r College, fig.dim = c(10, 11)}
+
+#reading in dataset
+#shortening titles
+college <- readxl::read_excel("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/Alcohol and Drugs College PIs 1314 to 1920.xlsx") %>% 
+  mutate(Superclass = case_when(Superclass == "Counselling / Advice Work / Crisis Support" ~ "Counselling/Advice Work/Crisis Support",
+                                Superclass == "Health Care Management/Health Studies" ~ "Healthcare Management/Health Studies",
+                                Superclass == "Semi-medical/Physical/Psycho/Therapies" ~ "Semimedical/Physical/Psycho/Therapies",
+                                Superclass == "Paramedical Services/Supplementary Medicine" ~ "Paramedical/Supplementary Medicine",
+                                T~Superclass))
+
+
+college %>%  
+  # filter(!Superclass %in% c("Dental Services", "Ophthalmic Services", "Caring Skills", "Health and Safety")) %>%
+  mutate(Superclass = case_when(Superclass %in% c("Counselling / Advice Work / Crisis Support",
+                                                  "Caring Skills",
+                                                  "Social / Family / Community Work",
+                                                  "Child Care Services",
+                                                  "Crisis Support/Counselling",
+                                                  "Family/Community Work",
+                                                  "Social care/Social Work Skills") ~ paste0(Superclass, "*"),
+                                                  T ~Superclass)) %>% 
+  filter(`PI Outcome` == "Completed success") %>% 
+  ggplot(aes(x=`Academic Year`, y=Enrolments)) +
+  geom_col(fill = "#0065bd")+
+  facet_wrap(~Superclass, ncol=3)+
+  geom_text(aes(label = ifelse(Enrolments<5000, 
+                               ifelse(`Academic Year` %in% c("2013-14", "2019-20"), scales::comma(Enrolments, accuracy = 1), ""), 
+                               ""), 
+                vjust = -.1), 
+            size = 4.5) +
+  labs(caption = "*These courses were consolidated/amalgamated in 2017-18, so are not directly comparable over the time series",
+       title = "Figure 1: Students successfully completing a college course in\nhealth care, social care or medical subjects, 2013-14 to 2019-20",
+       y="Completions") +
+  scale_y_continuous(labels = scales::comma) +
+  theme +
+  theme(axis.text.x = element_text(angle = 45, size=12, vjust=1, hjust=1))
+
+
+```
+
+Figure 1 shows the number of students meeting the aforementioned criteria that successfully completed a course by subject area between academic years 2013-14 and 2019-20 (the most recent data available). Although this analysis is relatively high-level, it shows that activity levels in relevant subject areas varied substantially over this period. For example, the number of students successfully completing psychology courses fell by nearly 40% (1,386 in AY2013-14 to 854 in AY2019-20), while successful completions in health care management/health studies more than doubled from 1,511 to 3,502. By contrast, the number of people gaining nursing qualifications in AY2013-14 – 956 – is nearly identical to the 950 successful completions in AY2019-20. This was likewise the case with medical technology/pharmacology (75 and 65 successful completions in AY2013-14 and AY2019-20, respectively).
+
+Other subject areas are less straightforward. The reason for this is because SFC modified their classification system in AY2017-18^[[SFC, 2017](https://www.sfc.ac.uk/publications-statistics/guidance/guidance-2017/SFCGD012017.aspx)], with the resulting groupings complicating attempts to draw conclusions across the entire time series. Nevertheless there are still interesting findings here. Since AY2017-18 alone, 1,170 people have successfully completed courses in counselling/advice work/crisis support, while over 15,000 have done so in social/family/community work. 
+
+Granted, a major limitation of this analysis is that it is coarse, containing only information about qualifications earned at the subject level. Furthermore there does not exist any database of course content, i.e. module names, syllabi, etc. This information only appears to be available piecemeal on colleges' websites. However, this data _does_ suggest that hundreds, if not thousands, of students are gaining the qualifications necessary to enter the alcohol and drugs workforce every academic year. These range from nursing, psychology and pharmacology, to courses preparing them for non-clinical-yet-still-essential roles in e.g. advocacy work, social work, counselling and health/social care management. If leveraged properly, the college sector could be a key skills incubator for this workforce.
+
+
+### 2.2 Universities (non-medical qualifications)
+
+The Higher Education Statistics Authority (HESA) is responsible for collecting, processing and publishing data about higher education institutions across the UK. However, this section will not focus on on training/registration/recruitment of the medical professions in Scotland, which is covered in Section 3 below. Instead, this section will provide an overview of students completing university-level qualifications in more specified areas.
+
+Beginning in AY2019-20, HESA implemented its Higher Education Classification of Subjects (HECoS) regime for categorising university-level subject areas, which replaced the previous Joint Academic Coding System (JACS). This change introduced a standalone 'drug and alcohol studies^[defined by HESA as "the interdisciplinary study of the misuse of drugs and alcohol, its impact on individuals, groups and wider society, including intervention strategies and the relationship between policy and practice"]' subject, which was an amalgamation of three JACS subjects: pharmacology, toxicology & pharmacy, counselling (general), and health & welfare. Although HESA outlines several caveats to the HECoS to JACS mapping^[See additional documentation here: [HESA, 2019](https://www.hesa.ac.uk/support/documentation/hecos)], this new category provides a relatively convenient means of evaluating time series data relevant to this research.
+
+Once again working with SFC, who publishes HESA data for Scottish universities^[[SFC, 2021](https://www.sfc.ac.uk/publications-statistics/statistical-publications/2021/SFCST032021.aspx)], a bespoke request was submitted for data on students qualifying any of the three 'drug and alcohol studies' subjects between 2013-14 and 2018-19^[The data would not be comparable for 2019-20 due to the migration to HECoS]. It was decided that this cut would only include Scots-domiciled students – i.e. those who would most likely stay in Scotland to work post-study – and be measured in full-person equivalents (FPEs) to account for students doing joint degrees.
+
+While there have been overall increases in students qualifying in both counselling (+50%) and health & welfare (+29.4%) between 2013-14 and 2018-19, there has been a substantial downturn in pharmacology, toxicology & pharmacy graduates (-71%). These figures are further contextualised by study level, as shown in Figure 2.
+
+```{r University, fig.dim = c(10, 7)}
+
+readxl::read_excel("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/Alcohol and Drugs University Qualifiers 1314 to 1819 by level.xlsx") %>% 
+  filter(`Subject Name` %in% c("Counselling", "Health and Welfare", "Pharmacology, Toxicology and Pharmacy")) %>% 
+  mutate(`Level of Qualification` = case_when(`Level of Qualification` %in% c("First Degree", "Other undergraduate") ~ "Undergraduate",
+                                              T~`Level of Qualification`)) %>% 
+  group_by(`Academic Year`,`Subject Name`, `Level of Qualification`) %>% 
+  summarise(total = sum(Qualifiers)) %>% 
+  ggplot(aes(x=`Academic Year`, y=total, group = `Subject Name`, color = `Subject Name`)) +
+  geom_point(size =4)+
+  geom_line()+
+  facet_wrap(~`Level of Qualification`) +
+  theme +
+  theme(axis.text.x = element_text(angle = 90, size=12, hjust =-1)) +
+  labs(title = "Figure 2: Students successfully completing a university degree in\ndrugs and alcohol studies subjects, 2013-14 to 2018-19",
+       y="Graduates (Full-Person Equivalents)") +
+  scale_color_manual(values = c("#9ecae1", "#4292c6", "#084594")) +
+  scale_y_continuous(breaks = seq(0,320, by=20))
+
+```
+
+Predictably, there were fewer students gaining research postgraduate qualifications compared to other study levels, with each subject producing <5 graduate FPEs in every academic year since 2016-17. By contrast, there was substantially more variation for undergraduates. Especially since AY2015-16 there have been notable increases in health and welfare as well as counselling graduates (312 and 74 respectively in AY2018-19), offset by decreases in pharmacology, toxicology and pharmacy (27). At the taught postgraduate level it is counselling which comprises the greatest share of graduate FPEs (132 in 2018-19), whereas health and welfare and pharmacology, toxicology and pharmacy subjects have been relatively stable - albeit with a slight downward trend in the former - since 2013-14. 
+
+Overall the number of Scots-domiciled students graduating from Scottish universities with these qualifications averaged 473.5 FPEs between 2013-14  and 2018-19. Fortunately, the introduction of a bespoke 'drugs and alcohol studies' subject area from 2019-20 will further improve data quality in graduates from these areas.
+
+In addition to this work with SFC, we worked closely with the [Drugs Research Network for Scotland](https://drns.ac.uk/) to identify offerings at individual institutions. Table 1 shows that, in contrast to the college level, universities offer qualifications at various study levels which are directly relevant to this analysis (and which will have been captured in Figure 2). There are also research consortia at various institutions which are actively progressing work in this space. Finally, this table does not include individual academics that are working in drugs/addiction/substance abuse but are unaffiliated with a formal research group.
+
+```{r Table1}
+
+Institution <- c("Glasgow Caledonian University", "University of Dundee", "Robert Gordon University", "University of Glasgow", "University of Glasgow", "University of Stirling", "University of Stirling",  "University of the West of Scotland", "University of the West of Scotland")
+Title <- c("Substance Use", "Leverhulme Research Centre for Forensic Science","Addiction and Substance Use in a Range of Contexts", "Substance Use in a Contemporary World", "MRC/CSO Social and Public Health Sciences Unit",  "Substance Use", "Salvation Army Centre for Addiction Services and Research", "Contemporary Drug & Alcohol Studies", "Addiction Psychology")
+Type <- c("Research Group", "Research Group","Short Course", "Microcredential", "Research Group",  "Taught Postgraduate", "Research Group", "Taught Postgraduate", "Taught Postgraduate")
+
+
+data.frame(Institution, Title, Type) %>% 
+  flextable() %>% 
+  merge_v(j='Institution') %>% 
+  # theme_vanilla() %>%
+  # autofit() %>% 
+  width(width = 2.5) %>% 
+  add_header_row(colwidths = 3,
+              values = "Table 1: Courses and research groups in relevant areas") %>% 
+   bold(part = 'header') %>% 
+  align(align = 'left', part='all') %>%
+  vline(j=c(1,2), border = officer::fp_border())%>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  hline(i=c(1,2,3,4,5,6,7,8), border = officer::fp_border())
+
+
+```
+
+Overall, this data shows the breadth of activities taking place at both the college and university levels, and provides a solid evidence base for future work. One potential avenue would be to evaluate curriculum offerings (via e.g. web scraping), to better understand the prevalence of relevant course content in more generalist qualifications. This underscores the need to have more formalised pathways into alcohol and drug service settings. Further and higher education institutions could be a key player in driving this change.
+
+## 3. Working Professionals
+
+Clinicians and allied health professionals play a core role in delivering alcohol and drug services. Accordingly there exists a variety of training and development opportunities available. However, figures around uptake of substance misuse training must be contextualised within the wider medical and non-medical workforce. Recruitment and registration data for this workforce is already publicly-available from other bodies, such as the General Medical Council^[[General Medical Council, 2021](https://data.gmc-uk.org/gmcdata/home/#/reports)] and Nursing & Midwifery Council^[[Nursing and Midwifery Council, 2021](https://www.nmc.org.uk/about-us/reports-and-accounts/registration-statistics/)], as well as NHS Scotland^[[NHS Scotland, 2021](https://www.scotmt.scot.nhs.uk/recruitment/recruitment-statistics.aspx)]. This section will therefore showcase high-level employment figures in select specialties. 
+
+### 3.1 An overview of the medical and non-medical workforce
+
+The data in this section has been sourced from the interactive dashboards provided by NES^[[NES, 2021](https://turasdata.nes.nhs.scot/data-and-reports/official-workforce-statistics/all-official-statistics-publications/07-december-2021-workforce/dashboards/nhsscotland-workforce/?pageid=5982)]. At the census date of 30 September 2021, the medical workforce constituted 14,837.2 WTEs across all specialties, and for the non-medical workforce this total was 139,470.6 WTEs. The NES data is not sufficiently granular to provide details of NHS professionals working drug and alcohol specialties. Therefore, for the purposes of this research we focussed on the following specialties and job families:
+  
+
+1. **Medical Workforce**: 
+    * General practice
+    * General psychiatry
+    * Psychotherapy
+    * Clinical pharmacology
+  
+2. **Non-medical Workforce**:
+    * Mental health nurses
+    * Pharmacy
+    * Clinical psychology & counselling
+
+```{r fig 3, fig.dim = c(10, 9)}
+
+NES_medical <- read_csv("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/NES_medical.csv") %>% 
+    mutate(date = as.Date(`Census date`, format = "%d/%m/%Y"),
+           cat = "Medical") %>% 
+    filter(Specialty %in% c("General practice", "General psychiatry", "Psychotherapy", "Clinical pharmacology & therapeutics")) %>% 
+    group_by(Specialty, date, cat) %>% 
+    summarise(WTE = sum(Employment)) 
+  
+NES_nonmedical <- read_csv("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/NES_non-medical.csv") %>% 
+  mutate(date = as.Date(`Census date`, format = "%d/%m/%Y"),
+         cat = "Non-medical",
+         Specialty = case_when(str_detect(`Sub job family`, "Adult|Mental health") ~ paste0(`Sub job family`, " nurse"),
+                               T~`Sub job family`)) %>% 
+  filter(Specialty %in% c("Adult nurse", "Mental health nurse", "Clinical psychology and counselling", "Pharmacy")) %>% 
+  group_by(Specialty, date, cat) %>% 
+  summarise(WTE = sum(Employment))
+
+summed_professions <- rbind(NES_medical, NES_nonmedical) %>% 
+  filter(Specialty != "Adult nurse") %>% 
+  ungroup() %>%
+  mutate(Specialty = fct_reorder(Specialty, WTE, .desc = F),
+         cat = case_when(str_detect(date, "09-30") ~ "Y", 
+                         str_detect(date, "03-31") ~ "Y",
+                         T~"N")) %>% 
+  filter(cat == "Y")
+
+
+ggplot(data = summed_professions, aes(x=date, y=WTE, alluvium = Specialty)) +
+  geom_alluvium(aes(fill = Specialty)) +
+  scale_fill_manual(values = c("#3f007d",
+                               "#6a51a3",
+                               "#9e9ac8",
+                               "#dadaeb",
+                               "#08306b",
+                               "#2171b5",
+                               "#6baed6")) +
+  theme+
+  theme(axis.text.x = element_text(angle = 90, size=12, vjust=.5, hjust=1),) +
+  scale_y_continuous(breaks = seq(0,70000, by=5000), labels = scales::comma, expand = c(0,250)) +
+  scale_x_date(date_labels = "%d/%m/%Y", breaks=unique(summed_professions$date), expand = c(0,20)) +
+  labs(x="",
+       title="Figure 3: Registrations of select medical and non-medical roles, \nSeptember 2011-September 2021",
+       caption = "Note: Purples refer to medical roles and blues are non-medical") +
+  guides(fill=guide_legend(ncol=2))
+```
+
+Figure 3 shows a time series of WTE employment across each of these areas since the 30 September 2011 census date. As might be expected, mental health nurses comprise the greatest share of this total, averaging nearly 10,000 WTEs over this period. There has also been substantial growth in pharmacy (2,115 WTEs in September 2011 to 3,633 today, +71.7%) as well as clinical psychology & counselling (1,173 to 1,825, +55.5%). On the medical side, there were notable increases amongst general practitioners (709 to 1,033, +45.6%) while general psychiatry has remained static. Finally, the numbers in psychotherapy and clinical pharmacology are so small – both <25 WTEs at every census date since September 2011 – that they scarcely show on this chart. 
+
+Of these specialisms, psychology is the only one which has 'alcohol and substance abuse' (or similar) as a separate area of work. Figure 4 shows the WTE number of psychologists working in this area over the same time series as above. Although there has been some year-on-year variation, the general trend has been upward, mirroring the results seen in Figure 3. 
+
+```{r fig 4, fig.dim = c(10, 5)}
+read_csv("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/psychology.csv") %>% 
+  separate(`Census Date`, into = c("month","year"), " ") %>% 
+  mutate(year = as.numeric(year),
+         rank = row_number())  %>% 
+  filter(year>2010,
+         month %in% c("Mar", "Sep")) %>% 
+  group_by(month, year) %>% 
+  summarise(total = sum(`Sum of Value`)) %>% 
+  arrange(-desc(year)) %>% 
+  ungroup() %>% 
+  mutate(date = str_c(month, "-", year),
+         rank = row_number()) %>% 
+  ggplot(aes(x=reorder(date,-rank), y=total)) +
+  geom_col(fill = "#0065bd")+
+  theme+
+  coord_flip()+
+  geom_text(aes(label = ifelse(rank %in%c(1,22), total, "")), hjust = -.1, size = 4.5) +
+  labs(title = "Figure 4: WTE psychologists working in alcohol and substance abuse, \nJune 2011 - present",
+       y="WTEs",
+       x="")
+
+
+```
+
+All this data shows that the numbers of medical and non-medical staff in most areas of interest to this research have increased over the last decade. Granted, not everyone included here will be working in frontline services, and vice-versa. Yet these charts do offer an idea of the potential pool of medical/non-medical personnel relevant to the alcohol and drugs workforce. Moreover, that services continue to be chronically understaffed and overcapacity – despite the increases in certain specialisms since September 2011 – suggest that the courses outlined in the following sections will assume greater importance in building resilience in frontline services.
+
+## 4. Continuing Professional Development
+
+### 4.1 NHS Education for Scotland
+
+In 2010, NHS Education Scotland (NES) established a Psychological Interventions Team (PIT) to increase workforce capacity and deliver evidence-based psychological therapies and interventions. Over the last decade, PIT has worked closely with Scottish Government to develop a suite of education and training programmes aimed at staff working within the NHS, social services and third sector organisations. The [Core Training Programme](https://www.nes.scot.nhs.uk/our-work/adult-mental-health-psychological-therapies-and-interventions/#coretrainingprogramme1) includes 'substance abuse' as a priority work stream, and through their TURAS portal NES have recorded robust enrollment data for their CPD courses in this work stream.
+
+Table 2 shows that over 350 health and social care professionals have completed courses in substance abuse offered by NES over the last two years. These have ranged from cognitive behavioural therapy to motivational interviewing to multidisciplinary modules, and have been run across every NHS Health Board in Scotland. Moreover, these figures do not include enrollments on training courses run in other (yet related) workstreams such as anxiety, depression and psychosis. These figures also show that the increase in demand for these courses has coincided with COVID-19 lockdowns, which raises questions about e.g. whether migrating training to online delivery has led to greater uptake or if services are recognising the importance of developing these skills amongst frontline workers. 
+
+```{r table2}
+Course_Title <- c("Implementing Core Skills for Preventing Relapse and Managing Recovery Management in Substance Misuse Services",
+                  "Introduction to CBT for Anxiety in Substance Misuse Settings", 
+                  "Implementing Workforce Development Planning in Scottish Alcohol and Other Drug Services",
+                  "Core Behavioural and CBT Skills for Relapse Prevention and Recovery Management ",
+                  "Training the Trainers: Introduction to Core Behavioural and CBT Skills for Relapse Prevention and Recovery Management",
+                  "Coaching the Coaches Seminar (invitation only)",
+                  "Developing and Enhancing Motivational Coaching Skills",
+                  "New Coach Training (Developing and Enhancing Motivational Coaching Skills)",
+                  "Scottish Winter School in Motivational Interviewing",
+                  "Introduction to Motivational Interviewing",
+                  "Workforce Development Resources to Support Alcohol/Drug Work in Scotland",
+                  "Safety and Stabilisation in Substance Misuse and Forensic Settings",
+                  "TOTAL")
+`2019-20` <- c(30, 11, 46, "-", 5, 9, 17, "-", 48, "-",  "-", "-", 166)
+`2020-21` <- c("-", "-", "-", 46, 4, "-", 16, 6, 25, 23,  37,  31, 188)
+
+data.frame(Course_Title, `2019-20`, `2020-21`) %>%
+  mutate(`Course Title` = Course_Title,
+         `AY2019-20` = `2019-20`,
+         `AY2020-21` = `2020-21`) %>% 
+  select(`Course Title`:`AY2020-21`) %>% 
+  flextable() %>%
+  width(j = 1, width = 5.5) %>% 
+  # theme_vanilla() %>%
+  add_header_row(colwidths = 3,
+                 values = "Table 2: Training courses available through NES, 2019-20 to 2020-21") %>%
+  align(j=1, align = 'left') %>%
+  bold(i = 13) %>%
+  bold(part = 'header') %>% 
+  vline(j=c(1,2), border = officer::fp_border()) %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  border_outer(border = officer::fp_border()) %>% 
+  hline(i=c(1,2,3,4,5,6,7,8,9,10,11,12,13), border = officer::fp_border())
+
+
+
+```
+
+### 4.2.1 Scottish Drugs Forum – Workforce Development Programme
+
+[Scottish Drugs Forum](https://www.sdf.org.uk/) (SDF) is a membership-based third sector organisation that works with drug and alcohol services, as well as people who use or have used services, to ensure quality and evidence-based policy and practice. Scottish Government contracts SDF to deliver a [Workforce Development Programme](https://www.sdf.org.uk/what-we-do/improving-services/workforce-development-programme/) across Scotland's alcohol and drug partnerships (ADPs). The training and workforce development options available under this scheme cover a range of issues pertinent to frontline workers in drug/alcohol services and beyond.
+
+As with NES, the COVID-19 pandemic forced SDF to discontinue several courses as well as face-to-face delivery. Nevertheless these changes coincided with an explosion in demand. In 2019, SDF recorded 2,140 enrollments on their core training – i.e. not including commissioned training or e-modules. This increased to to 3,447 (+61%) in 2020, followed by a slight dip to 3,271 in 2021. 
+
+```{r fig 5, fig.dim = c(10, 5)}
+
+
+SDF <- read_csv("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/SDF_training.csv") %>% 
+  mutate(Course = case_when(str_detect(Title, "Stigma") ~ "Understanding stigma: promoting inclusive attitudes/practice",
+                            str_detect(Title, 'Trauma') ~ "Introduction to trauma-informed practice for people who use substances",
+                            str_detect(Title, 'Motivational') ~ "Introduction to motivational interviewing",
+                            str_detect(Title, 'Alive') ~ "Staying alive: preventing drug-related deaths",
+                            str_detect(Title, 'Child') ~ "Children Affected by Parental Substance Use",
+                            str_detect(Title, 'Toot') ~ "Tooting v. Shooting (and other routes/methods of drug use)",
+                            str_detect(Title, 'Alcohol') ~ "Understanding/Supporting People with Alcohol-Related Brain Injury",
+                            str_detect(Title, 'Essential Skills|Engagement') ~"Essential skills for working with people who use substances",
+                            str_detect(Title, 'Older') ~ "Older & Wiser? Working with people who use substances as they age",
+                            T~Title),
+         Sector = case_when(str_detect(Sector, 'voluntary|Voluntary') ~ "Charity/volunteer org.",
+                            str_detect(Sector, "Housing") ~ "Housing and homelessness services",
+                            str_detect(Sector, "National") ~ "NHS",
+                            str_detect(Sector, "Police") ~ "Police services",
+                            str_detect(Sector, "Social work") ~ "Social Work",
+                            str_detect(Sector, "Family|Person") ~"People who use drugs/alcohol (inc. family)",
+                            T~Sector),
+         date = dmy(`End Date`),
+         Year = as.character(year(date)),
+         Sector = ifelse(is.na(Sector), 'Unknown', Sector),
+         Course = str_wrap(Course, width = 40))
+
+SDF %>% 
+  group_by(Course, Year) %>%
+  summarise(total = n()) %>% 
+  ggplot(aes(x= reorder(Year, desc(Year)), y=total, fill = Course)) +
+  geom_col(position = 'stack') +
+  theme_bw() +
+  theme +
+  coord_flip() +
+  scale_fill_brewer(type = "qual", palette = "Paired") +
+  scale_y_continuous(breaks = seq(0,3500, by=500), labels = scales::comma) +
+    labs(title = "Figure 5: Enrollments on SDF core courses, 2019-2021*",
+         y="Enrollments",
+         x="Year",
+         caption = "*Note 2021 figures are only through October") +
+  guides(fill=guide_legend(ncol=2, reverse = T)) +
+  geom_text(aes(label = ifelse(total>200, 
+                                scales::comma(total, accuracy = 1), "")), position = position_stack(vjust = .5), size = 4.5) 
+```
+
+Figure 5 shows a breakdown of SDF's core training offerings by course over this time series. Although overall enrollments have increased wholesale there is notable variation in attendance by course. For example, there was a sizable downturn in delivery of motivational interviewing courses, from 829 in 2020 to just 245 (-70%) in 2021. This reflects similar delivery changes in this area reported by NES above. By contrast, courses in trauma-informed practice (439 to 883, +101%) and stigma (692 to 827, +19.5%) have increased dramatically. Meanwhile delivery on e.g. children, drug death prevention, and communication skills courses have remained stable. It is worth noting as well that 2021 figures only include delivery through the month of October. Enrollments for this year may therefore eclipse those of 2020, even if only slightly.
+
+```{r fig 6, fig.dim = c(10, 5)}
+SDF %>% 
+  group_by(Sector) %>%
+  summarise(total = n()) %>% 
+  filter(!Sector %in%(c("Transport and logistics", "Teacher, training and education", "Retail and sales", "Interested member of the public", "People who use drugs/alcohol (inc. family)"))) %>% 
+  mutate(Sector = str_wrap(Sector, 30)) %>% 
+  ggplot(aes(x= reorder(Sector,total), y=total)) +
+  geom_col(fill = "#0065bd") +
+  theme_bw() +
+  coord_flip() +
+  labs(title = "Figure 6: SDF core course enrollments by org. type, \n2019-2021",
+       y="Enrollments",
+       x="Sector",
+       subtitle = "Omits sectors with <10 total enrollments*",
+       caption="*Transport and logistics, teacher, training and education, retail and sales, interested member of the public, people who use drugs")+
+  theme +
+  geom_text(aes(label = scales::comma(total, accuracy = 1)), hjust = 1, size = 4.5) +
+  scale_y_continuous(breaks = seq(0,2500, by=200),
+                     labels = scales::comma)
+```
+
+Figure 6 above shows the same data as above broken down by workforce sector (with some exclusions, see footnote). These figures show that – excluding 'Others' and 'Unknowns' – SDF delivers training to a range of stakeholders. Leading the way are charity/volunteer organisations with 1,817 enrollments across the time series, followed by social work (1,278), NHS (1,197), housing and homelessness services (1,083) and local authorities (782).
+
+Interestingly, drug or alcohol services were the *least*-represented sector amongst SDF course participants. In this respect the percent change of this sector since 2019 is notable. Table 3 below shows that attendance from nearly every sector grew over this three year period. Drug and alcohol services in particular increased by over 1,000%, although note that this is from a very small baseline. Attendance from those in housing and homelessness services and police services also increased by over 100%. By contrast, there were modest decreases in those attending from social work and local authority – -5% and -10% respectively.
+
+This analysis would ideally be bolstered by information on specific job roles. However this was not possible with the data available. More details on 'unknown' and 'other' attendees would also further contextualise these figures, given how large a share of overall enrollments they represent. These limitations notwithstanding, the data presented above shows that SDF plays a crucial role upskilling people working in alcohol and drug services as well as adjacent sectors. 
+
+```{r Table 3}
+
+SDF %>% 
+  group_by(Sector,Year) %>% 
+  summarise(total=n()) %>% 
+  pivot_wider(names_from = Year, values_from = total) %>% 
+  filter(!is.na(`2019`)) %>% 
+  mutate(propdif = round((`2021`-`2019`)/`2019`*100, 0)) %>% 
+  arrange(desc(propdif)) %>% 
+  mutate(`% Change` =paste0(propdif, '%')) %>% 
+  select(-propdif) %>%
+  flextable() %>%
+  width(width = 3, j=1) %>% 
+  # theme_vanilla() %>%
+  add_header_row(colwidths = 5,
+                 values = "Table 3: Proportional differences in enrollment on SDF courses by sector, 2019 to 2021") %>%
+  # align(align = 'center', part='all') %>%
+  vline(j=c(1,2,3,4), border = officer::fp_border()) %>% 
+  fontsize(i=1, size =12, part = 'header') %>% 
+  bold(j = 5) %>% 
+  bold(part = 'header') %>% 
+  hline(i=c(1,2,3,4,5,6,7,8,9), border = officer::fp_border()) %>% 
+  border_outer(border = officer::fp_border()) 
+  
+
+
+```
+
+### 4.2.2 Scottish Drugs Forum – Addiction Worker Training Project
+
+In addition to the Workforce Development Programme outlined above, SDF also runs an initiative called the [Addiction Worker Training Project](https://www.sdf.org.uk/what-we-do/addiction-worker-training-project/). Launched in 2004, this innovative programme provides supported paid employment, specialist training and vocational learning for unemployed people with a history of drug and alcohol problems. 
+
+People are recruited to AWTP from areas of high deprivation in Scotland to work with SDF for a total of nine months. After a 12-week induction period, trainees work towards completing a Scottish Vocational Qualification in social services and healthcare^[see [Scottish Qualifications Authority, 2022](https://www.sqa.org.uk/sqa/69120.html) for more information] (equivalent to completing a modern apprenticeship), following which they are eligible to register as members of the Scottish Social Services Council. Trainees then undertake two supported placements in organisations where they use their lived experience to provide effective interventions for people accessing services. They also undertake training in relevant topics such as (but not limited to) drug awareness, Naloxone, mental health, motivational interviewing, and others.
+
+Following completion of the programme, trainees receive support from SDF and employability partners in seeking employment and preparing for interviews for up to three months. However, there have been instances of trainees moving on to further employment or further education before the course ends.
+
+As Figure 7 demonstrates, the AWTP has been a resounding success. Of the 316 people who have started the programme, 281 (89%) have seen it through to completion, and over three in four (75.9%) have moved on to employment within the sector. This includes several years – 2011 and 2012 – where a 100% success rate was achieved across starts, completions and jobs. Between 2015 and 2020, an average of 17 AWTP graduates entered the workforce every year, where their lived experience combined with vocational training gained through the programme have equipped them with the tools necessary to work in frontline services. Given how important the lived experience cohort is in delivering on behalf of drug and alcohol service users, the possibility of expanding this training model ought to be explored further.
+
+```{r figure7, fig.dim = c(10, 5)}
+read_csv("//scotland.gov.uk/dc1/fs3_home/U449921/workforce/data/SDF_AWTP.csv") %>% 
+  pivot_longer(Starts:Jobs, names_to = "Category", values_to = "Total") %>% 
+  mutate(Year = as.character(Year), 
+         Category = as.factor(Category),
+         levels = case_when(Category == "Starts"~1, 
+                            Category == "Completions"~2,
+                            T~3)) %>% 
+  ggplot(aes(x=Year, y=Total, fill = reorder(Category, levels)))+
+  geom_col(position = "dodge", color = "black")+
+  theme +
+  theme(legend.title = element_blank())+
+  scale_fill_manual(values = c("#0065bd", "#912688", "white")) +
+  labs(title = "Figure 7: Enrollments on the Addiction Worker Training Project by category, \n2005-2020",
+       y="Total",
+       x="Year")
+
+
+```
+
+
+
+
+### 4.3 Royal College of General Practitioners Scotland
+
+The Royal College of General Practitioners Scotland (RCGP Scotland) offers a [Certificate in the Management of Problem Drug Use](https://www.rcgp.org.uk/rcgp-near-you/rcgp-nations/rcgp-scotland/certificate-in-the-management-of-problem-drug-use.aspx) that has been approved by an expert advisory panel of senior clinicians. Funded in part by Scottish Government, this course is designed to assist primary care professionals care for people affected by drug use, and is open to GPs, pharmacists, allied healthcare professionals, third sector workers, and anyone else working in primary care in Scotland.
+
+Since its relaunch in 2020, this two-part course has proven popular. Data provided by RCGP Scotland shows that a total of 84 people earned this certificate during the first cohort (February-October 2021) – 67 for part 1 and an additional 17 for part 2 of the course. These figures break down as:  
+
+* **GP or trainee GP**: 56
+* **Pharmacy**: 14
+* **Prison healthcare**: 14 
+
+Although GPs and GP trainees comprise the majority in both part 1 and part 2, there is also notable participation within the pharmacy and prison sectors as well. Demand has increased for cohort 2, with 80 people registered for part 1 (which ran from November-December 2021). Part 2 will take place in spring 2022.
+
+RCGP Scotland has confirmed that they are able to run this course due to a three-year tranche of SG funding which is currently in place until 2023. Given the announcement of the National Mission, it is worth discussing how this certificate can be supported beyond the end of the three year cycle.
+
+## 5. Conclusion
+
+This paper presented data on the drugs and alcohol workforce from myriad sources, ranging from higher/further education settings to the NHS and other professional organisations. However there are limitations to what this data can tell us. For example, this study relied on high level health and social care subject groupings to find relevant courses because there is no database containing information on course content/curriculum. This was problematic on the college side because it was not possible to identify college courses specific to drugs, alcohol or substance use treatment services in Scotland. Moreover, while a variety of organisations are offering relevant training in this space, there is once again no centralised repository providing information on what is being offered nor who is undertaking it. 
+
+Nevertheless, fruitful collaborations with partner organisations have produced datasets which show notable increases across a variety of professions relevant to drug and alcohol services. There is also high demand for continuing professional development within healthcare settings, as well as among non-clinical staff engaging with people who use drugs more widely. Moreover there is a large potential talent pool qualifying with relevant skills and aptitudes necessary to enter the workforce. This includes people with lived experience, who have a key role to play in the recovery journey of service users.
+
+However, these findings must be contextualised within the wider pressures and demands on health and social care. This is complicated by the fact that there do not exist formalised pathways into drug and alcohol treatment roles, especially for non-clinical positions. Given the key role that these staff can play in developing frontline services, more attention must be paid to recruitment and retention in these roles. Finally, the forthcoming implementation of Medically Assisted Treatment (MAT) Standards^[[Scottish Government, 2021b](https://www.gov.scot/publications/medication-assisted-treatment-mat-standards-scotland-access-choice-support/)] will have a substantial impact on the shape of frontline substance misuse services going forward. Ensuring that there is a robust skills pipeline will be crucial in helping embed the MAT Standards, as well as ensure the sustainability of the drugs and alcohol workforce more generally.
+
