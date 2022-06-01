@@ -56,6 +56,4 @@ cor(linreg_mod[c('caseload', 'vacancy_ratio', 'volunteers', 'CLINICAL', 'NONCLIN
 pairs(linreg_mod[c('caseload', 'vacancy_ratio', 'volunteers', 'CLINICAL', 'NONCLINICAL')])
 
 ##Analyses of variance
-anova(testregression,testregression2) ##the type of people employed in an organisation is significantly associated with sickness above and beyond what the number of people employed there (https://advstats.psychstat.org/book/mregression/catpredictor.php#example-4-regression-with-one-categorical-and-one-continuous-predictors-ancova)
-
-
+anova(testregression,testregression2) ##the type of people employed in an organisation is significantly associated with sickness above and beyond what the number of people employed there 
